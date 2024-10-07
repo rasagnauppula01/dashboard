@@ -356,7 +356,7 @@ const handleSortByLeadCount = (order) => {
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Group controlId="states">
+            <Form.Group controlId="states" className="scrollable-checkboxes">
               <Form.Label>States</Form.Label>
               {states.map((state) => (
                 <Form.Check

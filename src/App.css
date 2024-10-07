@@ -6,6 +6,12 @@ body {
     margin: 0;
   }
 
+  .scrollable-checkboxes {
+    max-height: 300px; /* Adjust this value as needed */
+    overflow-y: auto;
+  }
+  
+
 .table-container {
   width: 100%;
   font-family: "Almarai", sans-serif;
@@ -110,7 +116,7 @@ body {
 
   /* Pagination styles */
 .pagination {
-    margin-top: 20px;
+    margin: 20px 0px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -163,16 +169,14 @@ body {
     font: 700;
     font-weight: bold;
     text-transform: uppercase;
+    margin-top: 10px;
   }
 
-
-  
 .mobile-user-table{
     display: none;
 }
 
-@media only screen and (min-width: 768px) and (max-width: 1024px) ,
-(min-width: 1024px) and (max-width: 1440px){
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
   .table-container {
     width: 100%;
       font-family: "Almarai", sans-serif;
@@ -521,10 +525,10 @@ body {
 
 
   
+  
   /* Mobile View min 320*/
 @media only screen and (max-width:320px),(max-width: 767px) 
 {
-
   .user-table {
     display: none;
   }
@@ -631,10 +635,6 @@ body {
         border-radius: 28px;
       }
 
-
-
-
-
       .mobile-filter-sort {
   display: flex;
   justify-content: space-around;
@@ -681,10 +681,6 @@ body {
   background-color: #faaaab;
 }
 
-
-
-/* Add to your existing mobile view CSS */
-
 .filter-sort-row {
   display: flex;
   justify-content: space-evenly;
@@ -713,13 +709,10 @@ body {
   margin-bottom: 20px;
   gap: 5px;
 }
-
 .count-btn {
   background-color: #ddd;
   border-radius: 20px;
   padding: 8px 15px;
   font-size: 14px;
-  
 }
-  
   }
