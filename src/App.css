@@ -8,8 +8,7 @@ body {
 
 .table-container {
   width: 100%;
-    /* padding: 10px; */
-    font-family: "Almarai", sans-serif;
+  font-family: "Almarai", sans-serif;
   }
   
   h1 {
@@ -75,6 +74,7 @@ body {
     justify-content: space-between;
     align-items: center;
     background-image: url(./Background.jpg);
+    padding: 20px 10px;
   }
   .desktop-header h1{
     color: #ffffff;
@@ -85,19 +85,12 @@ body {
     display: flex;
     align-items: center;
     color: #F9FCFF;
-    padding: 10px;
-  }
-  
-  .folder-icon {
-    margin-left: 10px;
-    padding-right: 10px;
-    font-size: 24px;
-    color: #FFFFFF;
+    /* padding: 10px; */
   }
   
   .edit-icon {
     cursor: pointer;
-    margin-right: 5px;
+    /* margin-right: 5px; */
     font-size: 16px;
   }
   .edit-action{
@@ -109,7 +102,7 @@ body {
   .search-input {
     width: 360px;
     padding: 10px;
-    margin: 20px 0;
+    /* margin: 20px 0; */
     border: 1px solid #ccc;
     border-radius: 28px;
   }
@@ -127,7 +120,7 @@ body {
     margin: 0 5px;
     padding: 8px 12px;
     border: none;
-    background-color: #111542;
+    background-color:#111542;
     color: white;
     cursor: pointer;
     font-size: 14px;
@@ -147,7 +140,8 @@ body {
   }
   
   .pagination button.active {
-    background-color:#111542;
+    
+    background-color: #2db0e0;
   }
 
 
@@ -177,11 +171,10 @@ body {
     display: none;
 }
 
-@media only screen and (min-width: 600px) and (max-width: 1024px) ,
-(min-width: 1025px) and (max-width: 1440px){
+@media only screen and (min-width: 768px) and (max-width: 1024px) ,
+(min-width: 1024px) and (max-width: 1440px){
   .table-container {
     width: 100%;
-      margin: 20px;
       font-family: "Almarai", sans-serif;
     }
     
@@ -521,4 +514,212 @@ body {
 
       
     
+  }
+
+
+
+
+
+  
+  /* Mobile View min 320*/
+@media only screen and (max-width:320px),(max-width: 767px) 
+{
+
+  .user-table {
+    display: none;
+  }
+
+  .mobile-user-table {
+    display: block;
+    /* margin: 20px; */
+  }
+
+
+  .mobile-user {
+    /* padding: 10px; */
+    border: 1px solid #DBDBDB;
+    margin-bottom: 12px;
+    border-radius: 5px;
+    color:#000000;
+    background-color: #FAFAFA;
+  }
+
+  .status-row {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 5px 0;
+  }
+  .status-btn{
+      margin-right: 51%;
+  }
+
+  .info-left,
+  .info-right {
+    padding: 5px 0;
+  }
+  .info-left, .th{
+      text-decoration: #000000;
+      text-transform: uppercase;
+      font-weight: bold;
+  }
+  
+    .user-table {
+      display: none;
+    }
+  
+    .mobile-user-table {
+      display: block;
+      /* margin: 20px; */
+    }
+
+  
+    .mobile-user {
+      /* padding: 10px; */
+      border: 1px solid #DBDBDB;
+      margin-bottom: 12px;
+      border-radius: 5px;
+      color:#000000;
+      background-color: #FAFAFA;
+    }
+  
+    .status-row {
+      flex-direction: row;
+      justify-content: space-between;
+      padding: 5px 0;
+    }
+    .status-btn{
+        margin-right: 51%;
+    }
+  
+    .info-left,
+    .info-right {
+      padding: 5px 0;
+    }
+    .info-left, .th{
+        text-decoration: #000000;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+
+    .desktop-header {
+        background-image: url(./Rectangle\ 13.jpg);
+        height: 100px;
+        width: 100%;
+        
+        }
+
+      .desktop-header h1{
+        color: #ffffff;
+        font-size: 18px;
+        text-align: center;
+        
+      }
+      
+      .search-folder {
+        display: flex;
+        align-items: center;
+        color: #F9FCFF;
+      }
+      
+
+    .search-input {
+        width: 180px;
+        /* padding: 5px; */
+        
+        border: 1px solid #ccc;
+        border-radius: 28px;
+      }
+
+
+
+
+
+      .mobile-filter-sort {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.filter-button,
+.sort-button {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  background-color: #f0f0f0;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.filter-icon,
+.sort-icon {
+  margin-right: 8px;
+}
+
+.mobile-status-filters {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.status-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  background-color: #f0f0f0;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.status-button.active {
+  background-color: #9de09e;
+}
+
+.status-button.inactive {
+  background-color: #faaaab;
+}
+
+
+
+/* Add to your existing mobile view CSS */
+
+.filter-sort-row {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 15px;
+}
+
+.filter-btn, .sort-btn {
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  color: #333;
+  border: 1px solid #DBDBDB;
+  border-radius: 2px;
+  padding: 8px 50px;
+  font-size: 14px;
+}
+
+.filter-btn svg, .sort-btn svg {
+  margin-right: 5px;
+}
+
+/* ALL, ACTIVE, INACTIVE count buttons */
+.status-counts {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  gap: 5px;
+}
+
+.count-btn {
+  background-color: #ddd;
+  border-radius: 20px;
+  padding: 8px 15px;
+  font-size: 14px;
+  
+}
+  
   }

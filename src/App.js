@@ -275,9 +275,9 @@ const handleSortByLeadCount = (order) => {
       </div>
 
       <div className="status-counts">
-        <span className="count-btn">All ({allCount})</span>
-        <span className="count-btn">Active ({activeCount})</span>
-        <span className="count-btn">Inactive ({inactiveCount})</span>
+        <span className="count-btn">All({allCount})</span>
+        <span className="count-btn">Active({activeCount})</span>
+        <span className="count-btn">Inactive({inactiveCount})</span>
       </div>
   </div>
 
