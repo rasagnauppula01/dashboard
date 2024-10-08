@@ -7,7 +7,7 @@ body {
   }
 
   .scrollable-checkboxes {
-    max-height: 250px; 
+    max-height: 300px; 
     overflow-y: auto;
   }
   
@@ -101,6 +101,19 @@ body {
     display: flex;
   }
   
+  .Edit-Button{
+    border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #72c1dc;
+  border-radius: 5px;
+  }
+  
   .search-input {
     width: 360px;
     padding: 10px;
@@ -164,6 +177,40 @@ body {
 
 .mobile-user-table{
     display: none;
+}
+.filter-sort-rows {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 15px;
+}
+
+.filter-btn, .sort-btn {
+  display: flex;
+  align-items: center;
+  background-color: #FFA500;
+  color: #333;
+  border: 1px solid #DBDBDB;
+  border-radius: 2px;
+  padding: 25px 50px;
+  font-size: 14px;
+}
+
+.filter-btn svg, .sort-btn svg {
+  margin-right: 5px;
+}
+
+/* ALL, ACTIVE, INACTIVE count buttons */
+.status-counts {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.count-btn {
+  background-color: #ddd;
+  border-radius: 20px;
+  padding: 8px 15px;
+  font-size: 14px;
 }
 
 
@@ -343,9 +390,10 @@ body {
     }
   
     .status-row {
+      display: flex;
       flex-direction: row;
       justify-content: space-between;
-      padding: 5px 0;
+      /* padding: 5px 0; */
     }
     .status-btn{
         margin-right: 51%;

@@ -4,6 +4,7 @@ import axios from "axios";
 import { FaChevronLeft, FaChevronRight, FaFilter, FaFolder, FaSort } from "react-icons/fa";
 import { Modal, Button, Form } from "react-bootstrap";
 import Dropdown from 'react-bootstrap/Dropdown';
+import Multiselect from 'multiselect-react-dropdown';
 
 const App= () => {
   const [users, setUsers] = useState([]);
@@ -171,6 +172,44 @@ const handleSortByLeadCount = (order) => {
         </header>
       </div>
 
+      <div className="filter-sort-rows">
+        {/* Filter By Dropdown */}
+        <Dropdown>
+          <Dropdown.Toggle variant="warning" id="filter-sort-dropdown">
+            <FaFilter /> Filter
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu>
+            <Dropdown.Item onClick={() => setSelectedFilter('name')}>Name</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item onClick={() => setSelectedFilter('leadCount')}>Lead Count</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+
+        {/* Sort By Dropdown */}
+        <Dropdown>
+          <Dropdown.Toggle variant="warning" id="sort-dropdown">
+            <FaSort /> Sort
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu>
+            {selectedFilter === "name" ? (
+              <>
+                <Dropdown.Item onClick={() => handleSortByName('asc')}>A to Z</Dropdown.Item>
+                <Dropdown.Item onClick={() => handleSortByName('desc')}>Z to A</Dropdown.Item>
+              </>
+            ) : selectedFilter === "leadCount" ? (
+              <>
+                <Dropdown.Item onClick={() => handleSortByLeadCount('max')}>High to Low</Dropdown.Item>
+                <Dropdown.Item onClick={() => handleSortByLeadCount('min')}>Low to High</Dropdown.Item>
+              </>
+            ) : (
+              <Dropdown.ItemText>Select filter first</Dropdown.ItemText>
+            )}
+          </Dropdown.Menu>
+        </Dropdown>
+      </div>
+
       <table className="user-table">
         <thead>
           <tr>
@@ -187,6 +226,7 @@ const handleSortByLeadCount = (order) => {
           </tr>
         </thead>
         <tbody>
+        
           {currentUsers.length > 0 ? (
             currentUsers.map((user, index) => (
               <tr key={user.user_id}>
@@ -219,7 +259,7 @@ const handleSortByLeadCount = (order) => {
                   </button>
                 </td>
                 <td>
-                  <button onClick={() => handleEdit(user)}>✏️Edit</button>
+                  <button onClick={() => handleEdit(user)} className='Edit-Button'>✏️Edit</button>
                 </td>
               </tr>
             ))
@@ -235,9 +275,9 @@ const handleSortByLeadCount = (order) => {
       <div className="mobile-user-table">
         
     <div className="mobile-user-table">
-      
-      <div className="filter-sort-row">
-        {/* Filter By Dropdown */}
+      {/* Filter By Dropdown */}
+      {/* <div className="filter-sort-row">
+        
         <Dropdown>
           <Dropdown.Toggle variant="secondary" id="filter-sort-dropdown">
             <FaFilter /> Filter
@@ -250,7 +290,7 @@ const handleSortByLeadCount = (order) => {
           </Dropdown.Menu>
         </Dropdown>
 
-        {/* Sort By Dropdown */}
+        
         <Dropdown>
           <Dropdown.Toggle variant="secondary" id="sort-dropdown">
             <FaSort /> Sort
@@ -272,7 +312,7 @@ const handleSortByLeadCount = (order) => {
             )}
           </Dropdown.Menu>
         </Dropdown>
-      </div>
+      </div> */}
 
       <div className="status-counts">
         <span className="count-btn">All({allCount})</span>
@@ -296,9 +336,7 @@ const handleSortByLeadCount = (order) => {
                       }} className="status-btn">
                     {user.status === "active" ? "Activate" : "Inactivate"}
                   </button>
-                <button className="edit-icon" onClick={() => handleEdit(user)}>
-                  ✏️
-                </button>
+                <button className='Edit-Button' onClick={() => handleEdit(user)}>✏️</button>
               </div>
 
               <div className="column">
@@ -350,7 +388,7 @@ const handleSortByLeadCount = (order) => {
         )}
       </div>
 
-      <Modal show={showEditModal} onHide={() => setShowEditModal(false)} centered>
+      {/* <Modal show={showEditModal} onHide={() => setShowEditModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Edit Participant</Modal.Title>
         </Modal.Header>
@@ -368,6 +406,54 @@ const handleSortByLeadCount = (order) => {
                   onChange={() => handleStateChange(state)}
                 />
               ))}
+            </Form.Group>
+            <Form.Group controlId="website">
+              <Form.Label>Website URL</Form.Label>
+              <Form.Control
+                type="url"
+                placeholder="Enter website URL"
+                value={website}
+                onChange={(e) => setWebsite(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group controlId="constant">
+              <Form.Label>Constant (%)</Form.Label>
+              <Form.Control
+                type="number"
+                min="0"
+                max="100"
+                value={constant}
+                onChange={(e) => setConstant(e.target.value)}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowEditModal(false)}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleSave}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal> */}
+
+<Modal show={showEditModal} onHide={() => setShowEditModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Participant</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group controlId="states">
+              <Form.Label>States</Form.Label>
+              <Multiselect
+                options={states} // List of options
+                selectedValues={selectedStates} // Preselected values
+                onSelect={(selectedList) => setSelectedStates(selectedList)} // Function when an item is selected
+                onRemove={(selectedList) => setSelectedStates(selectedList)} // Function when an item is removed
+                displayValue="name" // Property to display
+                isObject={false} // States array is a list of strings, not objects
+              />
             </Form.Group>
             <Form.Group controlId="website">
               <Form.Label>Website URL</Form.Label>
