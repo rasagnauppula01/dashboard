@@ -345,7 +345,8 @@ body {
 }
 
 .pagination button.active {
-  background-color:#111542;
+  background-color: #2db0e0;
+    border: 2px solid #111542;
 }
 
 .dropdown-checkbox {
