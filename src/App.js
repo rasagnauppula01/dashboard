@@ -350,7 +350,7 @@ const handleSortByLeadCount = (order) => {
         )}
       </div>
 
-      <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
+      <Modal show={showEditModal} onHide={() => setShowEditModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Edit Participant</Modal.Title>
         </Modal.Header>
