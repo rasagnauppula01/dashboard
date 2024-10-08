@@ -167,7 +167,7 @@ body {
 }
 
 
-@media only screen and (min-width: 768px) and (max-width: 1023px),(min-width: 1024px) and (max-width: 1283px) {
+@media only screen and (min-width: 767px) and (max-width: 1023px),(min-width: 1024px) and (max-width: 1283px) {
   .table-container {
     width: 1284px; 
     }
