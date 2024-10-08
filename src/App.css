@@ -7,11 +7,10 @@ body {
   }
 
   .scrollable-checkboxes {
-    max-height: 300px; /* Adjust this value as needed */
+    max-height: 300px; 
     overflow-y: auto;
   }
   
-
 .table-container {
   width: 100%;
   font-family: "Almarai", sans-serif;
@@ -37,7 +36,7 @@ body {
   
   .user-table th,
   .user-table td {
-    padding: 22px 15px;
+    padding: 22px 18px;
     text-align: left;
     
   }
@@ -47,7 +46,6 @@ body {
     color: #747474;
     text-transform: uppercase;
     font-weight: bold;
-    padding: 25px;
     font-size: 14px;
     margin: 10px;
   }
@@ -73,7 +71,6 @@ body {
     border-bottom: 1px solid #ddd;
   }
   
-
   /* header stylings */
   .desktop-header {
     display: flex;
@@ -91,14 +88,13 @@ body {
     display: flex;
     align-items: center;
     color: #F9FCFF;
-    /* padding: 10px; */
   }
   
   .edit-icon {
     cursor: pointer;
-    /* margin-right: 5px; */
     font-size: 16px;
   }
+
   .edit-action{
     border: 1px solid #D9D9DC;
     padding: 5px;
@@ -108,12 +104,10 @@ body {
   .search-input {
     width: 360px;
     padding: 10px;
-    /* margin: 20px 0; */
     border: 1px solid #ccc;
     border-radius: 28px;
   }
   
-
   /* Pagination styles */
 .pagination {
     margin: 20px 0px;
@@ -146,40 +140,40 @@ body {
   }
   
   .pagination button.active {
-    
     background-color: #2db0e0;
+    border: 2px solid #111542;
   }
-
-
 
   .dropdown-checkbox {
     max-height: 200px;
     overflow-y: auto;
     border: 1px solid #ddd;
     padding: 10px;
-    
   }
   
   .dropdown-checkbox input[type="checkbox"] {
     margin-right: 8px;
   }
   
-
   .form-label{
     font: 700;
     font-weight: bold;
     text-transform: uppercase;
-    margin-top: 10px;
+    margin-top: 12px;
   }
 
 .mobile-user-table{
     display: none;
 }
 
-@media only screen and (min-width: 768px) and (max-width: 1023px) {
+
+@media only screen and (min-width: 768px) and (max-width: 1023px),(min-width: 1024px) and (max-width: 1283px) {
   .table-container {
-    width: 100%;
-      font-family: "Almarai", sans-serif;
+    width: 1284px; 
+    }
+
+    .header-bg{
+      width: 100%;
     }
     
     h1 {
@@ -188,6 +182,24 @@ body {
       font-size: 24px;
       color: #FFFFFF;
       padding: 10px;
+    }
+
+    .desktop-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-image: url(./Background.jpg);
+    }
+    .desktop-header h1{
+      color: #ffffff;
+      font-size: 25px;
+    }
+    
+    .search-folder {
+      display: flex;
+      align-items: center;
+      color: #F9FCFF;
     }
     
     .user-table {
@@ -202,7 +214,7 @@ body {
     
     .user-table th,
     .user-table td {
-      padding: 22px 15px;
+      padding: 22px 18px;
       text-align: left;
       
     }
@@ -212,7 +224,6 @@ body {
       color: #747474;
       text-transform: uppercase;
       font-weight: bold;
-      padding: 25px;
       font-size: 14px;
       margin: 10px;
     }
@@ -237,31 +248,6 @@ body {
     .user-table td {
       border-bottom: 1px solid #ddd;
     }
-.desktop-header {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-image: url(./Background.jpg);
-}
-.desktop-header h1{
-  color: #ffffff;
-  font-size: 25px;
-}
-
-.search-folder {
-  display: flex;
-  align-items: center;
-  color: #F9FCFF;
-  padding: 10px;
-}
-
-.folder-icon {
-  margin-left: 10px;
-  padding-right: 10px;
-  font-size: 24px;
-  color: #FFFFFF;
-}
 
 .edit-icon {
   cursor: pointer;
@@ -277,13 +263,10 @@ body {
 .search-input {
   width: 360px;
   padding: 10px;
-  margin: 20px 0;
+  margin: 10px 0;
   border: 1px solid #ccc;
   border-radius: 28px;
 }
-
-
-/* Pagination styles */
 .pagination {
   margin-top: 20px;
   display: flex;
@@ -318,20 +301,16 @@ body {
   background-color:#111542;
 }
 
-
-
 .dropdown-checkbox {
   max-height: 200px;
   overflow-y: auto;
   border: 1px solid #ddd;
   padding: 10px;
-  
 }
 
 .dropdown-checkbox input[type="checkbox"] {
   margin-right: 8px;
 }
-
 
 .form-label{
   font: 700;
@@ -344,11 +323,8 @@ body {
 }
 }
 
-
 /* Mobile View */
-@media only screen and (max-width:500px),(max-width: 767px) 
-{
-  
+@media only screen and (max-width:500px) and (max-width: 767px),(min-width:500px) and (max-width: 767px) {
     .user-table {
       display: none;
     }
@@ -357,8 +333,6 @@ body {
       display: block;
       margin: 20px;
     }
-
-  
     .mobile-user {
       padding: 10px;
       border: 1px solid #DBDBDB;
@@ -386,20 +360,16 @@ body {
         text-transform: uppercase;
         font-weight: bold;
     }
-
-
     .desktop-header {
         background-image: url(./Rectangle\ 13.jpg);
         height: 100px;
         width: 100%;
-        
         }
 
       .desktop-header h1{
         color: #ffffff;
         font-size: 20px;
         text-align: center;
-        
       }
       
       .search-folder {
@@ -426,10 +396,6 @@ body {
         border: 1px solid #ccc;
         border-radius: 28px;
       }
-
-
-
-
 
       .mobile-filter-sort {
   display: flex;
@@ -476,10 +442,6 @@ body {
 .status-button.inactive {
   background-color: #faaaab;
 }
-
-
-
-/* Add to your existing mobile view CSS */
 
 .filter-sort-row {
   display: flex;
@@ -515,19 +477,11 @@ body {
   padding: 8px 15px;
   font-size: 14px;
 }
-
-      
-    
   }
 
 
-
-
-
-  
-  
   /* Mobile View min 320*/
-@media only screen and (max-width:320px),(max-width: 767px) 
+@media only screen and (max-width:320px),(max-width: 499px) 
 {
   .user-table {
     display: none;
@@ -535,12 +489,10 @@ body {
 
   .mobile-user-table {
     display: block;
-    /* margin: 20px; */
   }
 
 
   .mobile-user {
-    /* padding: 10px; */
     border: 1px solid #DBDBDB;
     margin-bottom: 12px;
     border-radius: 5px;
@@ -573,12 +525,10 @@ body {
   
     .mobile-user-table {
       display: block;
-      /* margin: 20px; */
     }
 
   
     .mobile-user {
-      /* padding: 10px; */
       border: 1px solid #DBDBDB;
       margin-bottom: 12px;
       border-radius: 5px;
@@ -605,19 +555,16 @@ body {
         font-weight: bold;
     }
 
-
     .desktop-header {
         background-image: url(./Rectangle\ 13.jpg);
         height: 100px;
         width: 100%;
-        
         }
 
       .desktop-header h1{
         color: #ffffff;
         font-size: 18px;
         text-align: center;
-        
       }
       
       .search-folder {
@@ -629,8 +576,6 @@ body {
 
     .search-input {
         width: 180px;
-        /* padding: 5px; */
-        
         border: 1px solid #ccc;
         border-radius: 28px;
       }
@@ -702,7 +647,6 @@ body {
   margin-right: 5px;
 }
 
-/* ALL, ACTIVE, INACTIVE count buttons */
 .status-counts {
   display: flex;
   justify-content: space-around;
