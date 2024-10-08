@@ -10,7 +10,8 @@ const App= () => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const usersPerPage = 5;
+  const [usersPerPage, setUsersPerPage] = useState(10);
+  const itemsPerPage = [10, 20, 50, 100];
   const [showEditModal, setShowEditModal] = useState(false);
   const [editUser, setEditUser] = useState(null);
   const [states, setStates] = useState([]);
@@ -281,49 +282,7 @@ const handleSortByLeadCount = (order) => {
         
     <div className="mobile-user-table">
       {/* Filter By Dropdown */}
-      {/* <div className="filter-sort-row">
-        
-        <Dropdown>
-          <Dropdown.Toggle variant="secondary" id="filter-sort-dropdown">
-            <FaFilter /> Filter
-          </Dropdown.Toggle>
-
-          <Dropdown.Menu>
-            <Dropdown.Item onClick={() => setSelectedFilter('name')}>Name</Dropdown.Item>
-            <Dropdown.Divider />
-            <Dropdown.Item onClick={() => setSelectedFilter('leadCount')}>Lead Count</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-
-        
-        <Dropdown>
-          <Dropdown.Toggle variant="secondary" id="sort-dropdown">
-            <FaSort /> Sort
-          </Dropdown.Toggle>
-
-          <Dropdown.Menu>
-            {selectedFilter === "name" ? (
-              <>
-                <Dropdown.Item onClick={() => handleSortByName('asc')}>A to Z</Dropdown.Item>
-                <Dropdown.Item onClick={() => handleSortByName('desc')}>Z to A</Dropdown.Item>
-              </>
-            ) : selectedFilter === "leadCount" ? (
-              <>
-                <Dropdown.Item onClick={() => handleSortByLeadCount('max')}>High to Low</Dropdown.Item>
-                <Dropdown.Item onClick={() => handleSortByLeadCount('min')}>Low to High</Dropdown.Item>
-              </>
-            ) : (
-              <Dropdown.ItemText>Select filter first</Dropdown.ItemText>
-            )}
-          </Dropdown.Menu>
-        </Dropdown>
-      </div> */}
-
-      {/* <div className="status-counts">
-        <span className="count-btn">All({allCount})</span>
-        <span className="count-btn">Active({activeCount})</span>
-        <span className="count-btn">Inactive({inactiveCount})</span>
-      </div> */}
+      
   </div>
 
 
@@ -393,56 +352,6 @@ const handleSortByLeadCount = (order) => {
         )}
       </div>
 
-      {/* <Modal show={showEditModal} onHide={() => setShowEditModal(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit Participant</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group controlId="states" className="scrollable-checkboxes">
-              <Form.Label>States</Form.Label>
-              {states.map((state) => (
-                <Form.Check
-                  key={state}
-                  type="checkbox"
-                  label={state}
-                  value={state}
-                  checked={selectedStates.includes(state)}
-                  onChange={() => handleStateChange(state)}
-                />
-              ))}
-            </Form.Group>
-            <Form.Group controlId="website">
-              <Form.Label>Website URL</Form.Label>
-              <Form.Control
-                type="url"
-                placeholder="Enter website URL"
-                value={website}
-                onChange={(e) => setWebsite(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group controlId="constant">
-              <Form.Label>Constant (%)</Form.Label>
-              <Form.Control
-                type="number"
-                min="0"
-                max="100"
-                value={constant}
-                onChange={(e) => setConstant(e.target.value)}
-              />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowEditModal(false)}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleSave}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal> */}
-
 <Modal show={showEditModal} onHide={() => setShowEditModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Edit Participant</Modal.Title>
@@ -491,7 +400,7 @@ const handleSortByLeadCount = (order) => {
         </Modal.Footer>
       </Modal>
 
-      <div className="pagination">
+  <div className="pagination">
   <button
     onClick={() => handlePageChange(currentPage - 1)}
     disabled={currentPage === 1}
@@ -515,6 +424,16 @@ const handleSortByLeadCount = (order) => {
   >
     <FaChevronRight />
   </button>
+
+  <select id="itemsPerPage" value={usersPerPage} onChange={(e)=>setUsersPerPage(e.target.value)}>
+    {
+      (itemsPerPage && itemsPerPage.length > 0)
+      &&
+      itemsPerPage.map((opt, index)=>(
+        <option key={index} value={opt}>{opt}</option>
+      ))
+    }
+  </select>
 </div>
 
     </div>

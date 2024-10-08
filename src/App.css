@@ -214,6 +214,61 @@ body {
 }
 
 
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  color: #333;
+  padding: 8px 12px;
+  margin: 0 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #e0e0e0;
+}
+
+.pagination .active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.pagination select {
+  margin-left: 15px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  color: #333;
+}
+
+.pagination select:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.pagination option {
+  padding: 10px;
+  background-color: white;
+}
+
+
 @media only screen and (min-width: 768px) and (max-width: 1023px),(min-width: 1024px) and (max-width: 1283px) {
   .table-container {
     width: 1317px; 
@@ -261,7 +316,7 @@ body {
     
     .user-table th,
     .user-table td {
-      padding: 22px 18px;
+      padding: 22px 10px;
       text-align: left;
       
     }
@@ -348,6 +403,60 @@ body {
   background-color: #2db0e0;
     border: 2px solid #111542;
 }
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  color: #333;
+  padding: 8px 12px;
+  margin: 0 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #e0e0e0;
+}
+
+.pagination .active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.pagination select {
+  margin-left: 15px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  color: #333;
+}
+
+.pagination select:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.pagination option {
+  padding: 10px;
+  background-color: white;
+}
+
 
 .dropdown-checkbox {
   max-height: 200px;
