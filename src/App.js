@@ -209,6 +209,11 @@ const handleSortByLeadCount = (order) => {
           </Dropdown.Menu>
         </Dropdown>
       </div>
+      <div className="status-counts">
+        <span className="count-btn">All({allCount})</span>
+        <span className="count-btn">Active({activeCount})</span>
+        <span className="count-btn">Inactive({inactiveCount})</span>
+      </div>
 
       <table className="user-table">
         <thead>
@@ -314,11 +319,11 @@ const handleSortByLeadCount = (order) => {
         </Dropdown>
       </div> */}
 
-      <div className="status-counts">
+      {/* <div className="status-counts">
         <span className="count-btn">All({allCount})</span>
         <span className="count-btn">Active({activeCount})</span>
         <span className="count-btn">Inactive({inactiveCount})</span>
-      </div>
+      </div> */}
   </div>
 
 

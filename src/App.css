@@ -181,7 +181,7 @@ body {
 .filter-sort-rows {
   display: flex;
   justify-content: space-evenly;
-  margin: 15px;
+  margin: 10px;
 }
 
 .filter-btn, .sort-btn {
@@ -203,11 +203,11 @@ body {
 .status-counts {
   display: flex;
   justify-content: space-around;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .count-btn {
-  background-color: #ddd;
+  background-color: #72c1dc;
   border-radius: 20px;
   padding: 8px 15px;
   font-size: 14px;
@@ -520,7 +520,7 @@ body {
 }
 
 .count-btn {
-  background-color: #ddd;
+  background-color: #72c1dc;
   border-radius: 20px;
   padding: 8px 15px;
   font-size: 14px;
@@ -702,7 +702,7 @@ body {
   gap: 5px;
 }
 .count-btn {
-  background-color: #ddd;
+  background-color: #72c1dc;
   border-radius: 20px;
   padding: 8px 15px;
   font-size: 14px;
