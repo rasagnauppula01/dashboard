@@ -1,7 +1,7 @@
 import './App.css';
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { FaChevronLeft, FaChevronRight, FaFilter, FaFolder, FaSort } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight, FaFilter, FaSort } from "react-icons/fa";
 import { Modal, Button, Form } from "react-bootstrap";
 import Dropdown from 'react-bootstrap/Dropdown';
 import Multiselect from 'multiselect-react-dropdown';
@@ -60,7 +60,8 @@ const [locationId, setLocationId] = useState(null);
   };
 
   const filteredUsers = users.filter((user) =>
-    user.name.toLowerCase().includes(searchTerm.toLowerCase())
+    user.name.toLowerCase().includes(searchTerm.toLowerCase())||
+    user.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const indexOfLastUser = currentPage * usersPerPage;
@@ -210,7 +211,7 @@ const toggleUserStatus = async (userId) => {
           <div className="search-folder">
             <input
               type="text"
-              placeholder="Search by Name ..."
+              placeholder="Search by Name or Email ..."
               value={searchTerm}
               onChange={handleSearch}
               className="search-input"
