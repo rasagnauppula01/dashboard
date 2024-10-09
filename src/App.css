@@ -30,12 +30,13 @@ body {
     margin: 0 auto;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border: 1px solid #ffffff;
-    border-radius: 28px;
+    /* border-radius: 28px; */
     background-color: #ffffff;
   }
   
   .user-table th,
   .user-table td {
+    width: 100%;
     padding: 22px 18px;
     text-align: left;
     
@@ -330,6 +331,7 @@ body {
   /* padding: 10px; */
   font-family: Arial, sans-serif;
   margin-bottom: 10px;
+  padding-left: 20px;
 }
 
 .multiselect-container .optionListContainer {

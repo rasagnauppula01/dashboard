@@ -216,6 +216,46 @@ const toggleUserStatus = async (userId) => {
   }
 };
 
+
+
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await axios.post("https://leadsystem.highsierraleads.com/get-users");
+      setUsers(response.data.users);
+      
+      // Extract unique locations
+      const uniqueLocations = [...new Set(response.data.users.map(user => user.location_name))];
+      setLocations(uniqueLocations);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  fetchData();
+}, []);
+
+const handleLocationChange = async (selectedList) => {
+  setSelectedLocations(selectedList);
+
+  // Prepare the location ID array from selected list
+  const locationIds = selectedList.map(location => {
+    const user = users.find(user => user.location_name === location);
+    return user ? user.location_id : null;
+  }).filter(id => id !== null);
+
+  // Make the API call with the selected location IDs
+  try {
+    const response = await axios.post("https://leadsystem.highsierraleads.com/get-users", {
+      locations: locationIds
+    });
+    setUsers(response.data.users);
+  } catch (error) {
+    console.error("Error fetching filtered users:", error);
+  }
+};
+
+
   return (
     <div className="table-container">
       <div className="header-bg">
@@ -237,37 +277,21 @@ const toggleUserStatus = async (userId) => {
         <span className="count-btn">All({allCount})</span>
         <span className="count-btn">Active({activeCount})</span>
         <span className="count-btn">Inactive({inactiveCount})</span>
-        {/* <div className='locations-drp'>
-        <Dropdown>
-          <Dropdown.Toggle variant="warning" id="location-filter-dropdown">
-            <FaFilter /> Location
-          </Dropdown.Toggle>
-
-          <Dropdown.Menu>
-            <Dropdown.Item onClick={() => setSelectedLocation("")}>All Locations</Dropdown.Item>
-            {locations.map((location, index) => (
-              <Dropdown.Item key={index} onClick={() => setSelectedLocation(location)}>
-                {location}
-              </Dropdown.Item>
-            ))}
-          </Dropdown.Menu>
-        </Dropdown>
-        </div> */}
       </div>
       
       {/* Multi-Select Dropdown for Location Filter */}
       <div className='locations-drp'>
-          <Multiselect
-            options={locations}
-            isObject={false}
-            selectedValues={setSelectedLocations}
-            onSelect={setSelectedLocations}
-            onRemove={setSelectedLocations}
-            placeholder="Filter by Location"
-            showCheckbox
-            closeOnSelect={false}
-            avoidHighlightFirstOption
-          />
+        <Multiselect
+          options={locations}
+          isObject={false}
+          selectedValues={selectedLocations}
+          onSelect={handleLocationChange}
+          onRemove={handleLocationChange}
+          placeholder="Filter by Location"
+          showCheckbox
+          closeOnSelect={false}
+          avoidHighlightFirstOption
+        />
         </div>
       
 
