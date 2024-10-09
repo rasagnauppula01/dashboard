@@ -73,6 +73,7 @@ body {
   
   /* header stylings */
   .desktop-header {
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -269,11 +270,74 @@ body {
 }
 
 
+
+.table-container {
+  max-width: 100%;
+  overflow-x: auto;
+  
+}
+
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.user-table th, .user-table td {
+  padding: 10px;
+  text-align: left;
+  /* border: 1px solid #ddd; */
+}
+
+.user-table th {
+  background-color: #f4f4f4;
+}
+
+.Edit-Button {
+  /* background-color: ; */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* .Edit-Button:hover {
+  background-color: #45a049;
+} */
+
+.user-table a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+.user-table a:hover {
+  text-decoration: underline;
+}
+
+/* Optional: add some style to the hover effect of the rows */
+.user-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.location-dropdown-center {
+  display: flex;
+  justify-content: center; 
+  align-items: center;     
+  margin-bottom: 20px; 
+}
+
+
 @media only screen and (min-width: 768px) and (max-width: 1023px),(min-width: 1024px) and (max-width: 1283px) {
   .table-container {
     width: 1317px; 
     }
-
+    .user-table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow-x: auto;
+      display: block; /* This ensures the table can scroll horizontally */
+    }
+    
     .header-bg{
       width: 100%;
     }

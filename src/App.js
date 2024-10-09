@@ -22,6 +22,10 @@ const App= () => {
 const [activeCount, setActiveCount] = useState(0);
 const [inactiveCount, setInactiveCount] = useState(0);
 const [selectedFilter, setSelectedFilter] = useState(""); 
+const [locations, setLocations] = useState([]); // To store available locations
+const [selectedLocation, setSelectedLocation] = useState(""); // To store the selected location
+const [locationId, setLocationId] = useState(null);
+
 
 
   useEffect(() => {
@@ -90,7 +94,9 @@ const [selectedFilter, setSelectedFilter] = useState("");
     setSelectedStates(user.states);
     setConstant(user.constant);
     setWebsite(user.website);
+    setLocationId(user.location_id); 
     setShowEditModal(true);
+    
   };
 
   const handleSave = async () => {
@@ -100,11 +106,12 @@ const [selectedFilter, setSelectedFilter] = useState("");
         constant: constant,
         website: website,
         states: selectedStates,
+        location_id: locationId,
       });
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
           user.user_id === editUser.user_id
-            ? { ...user, constant, website, states: selectedStates }
+            ? { ...user, constant, website, states: selectedStates, location_id: locationId }
             : user
         )
       );
@@ -154,6 +161,29 @@ const handleSortByLeadCount = (order) => {
   });
   setUsers(sortedUsers);
 };
+
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await axios.get("https://leadsystem.highsierraleads.com/get-users");
+      const usersData = response.data.users;
+      setUsers(usersData);
+      
+      // Extract unique locations
+      const uniqueLocations = [...new Set(usersData.map(user => user.location_name))];
+      setLocations(uniqueLocations);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  fetchData();
+}, []);
+
+const filteredUserLocation = users.filter((user) =>
+  user.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+  (selectedLocation === "" || user.location_name === selectedLocation)
+);
 
 
   return (
@@ -229,6 +259,24 @@ const handleSortByLeadCount = (order) => {
             <th>Website</th>
             <th>Status</th>
             <th>Edit</th>
+            {/* Location Filter Dropdown */}
+            <th>
+            <Dropdown>
+  <Dropdown.Toggle variant="warning" id="location-filter-dropdown">
+    <FaFilter /> Location
+  </Dropdown.Toggle>
+
+  <Dropdown.Menu>
+    <Dropdown.Item onClick={() => setSelectedLocation("")}>All Locations</Dropdown.Item>
+    {locations.map((location, index) => (
+      <Dropdown.Item key={index} onClick={() => setSelectedLocation(location)}>
+        {location}
+      </Dropdown.Item>
+    ))}
+  </Dropdown.Menu>
+</Dropdown>
+
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -267,6 +315,7 @@ const handleSortByLeadCount = (order) => {
                 <td>
                   <button onClick={() => handleEdit(user)} className='Edit-Button'>✏️Edit</button>
                 </td>
+                <td>{user.location_name || "N/A"}</td>
               </tr>
             ))
           ) : (
@@ -284,6 +333,23 @@ const handleSortByLeadCount = (order) => {
       {/* Filter By Dropdown */}
       
   </div>
+  <div className="location-dropdown-center">
+  <Dropdown>
+    <Dropdown.Toggle variant="warning" id="location-filter-dropdown">
+      <FaFilter /> Location
+    </Dropdown.Toggle>
+
+    <Dropdown.Menu>
+      <Dropdown.Item onClick={() => setSelectedLocation("")}>All Locations</Dropdown.Item>
+      {locations.map((location, index) => (
+        <Dropdown.Item key={index} onClick={() => setSelectedLocation(location)}>
+          {location}
+        </Dropdown.Item>
+      ))}
+    </Dropdown.Menu>
+  </Dropdown>
+</div>
+
 
 
         {currentUsers.length > 0 ? (
@@ -342,6 +408,10 @@ const handleSortByLeadCount = (order) => {
                 <div className="column">
                   <span className="th">Constant: </span>
                   <span>{user.constant}</span>
+                </div>
+                <div className="column">
+                  <span className="th">Location: </span>
+                  <span>{user.location_name || "N/A"}</span>
                 </div>
                 
               </div>
