@@ -25,6 +25,7 @@ const [selectedFilter, setSelectedFilter] = useState("");
 const [locations, setLocations] = useState([]); 
 const [selectedLocation, setSelectedLocation] = useState(""); 
 const [locationId, setLocationId] = useState(null);
+const [selectedLocations, setSelectedLocations] = useState([]);
 
 
 
@@ -137,6 +138,18 @@ const handleSortByLeadCount = (order) => {
   setUsers(sortedUsers);
 };
 
+// Sorting by constant (Max to Min, Min to Max)
+const handleSortByConstant = (order) => {
+  const sortedUsers = [...users].sort((a, b) => {
+    if (order === 'max') {
+      return b.constant - a.constant;
+    } else {
+      return a.constant - b.constant;
+    }
+  });
+  setUsers(sortedUsers);
+};
+
 useEffect(() => {
   const fetchData = async () => {
     try {
@@ -220,79 +233,109 @@ const toggleUserStatus = async (userId) => {
         </header>
       </div>
 
-      <div className="filter-sort-rows">
-        {/* Filter By Dropdown */}
-        <Dropdown>
-          <Dropdown.Toggle variant="warning" id="filter-sort-dropdown">
-            <FaFilter /> Filter
-          </Dropdown.Toggle>
-
-          <Dropdown.Menu>
-            <Dropdown.Item onClick={() => setSelectedFilter('name')}>Name</Dropdown.Item>
-            <Dropdown.Divider />
-            <Dropdown.Item onClick={() => setSelectedFilter('leadCount')}>Lead Count</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-
-        {/* Sort By Dropdown */}
-        <Dropdown>
-          <Dropdown.Toggle variant="warning" id="sort-dropdown">
-            <FaSort /> Sort
-          </Dropdown.Toggle>
-
-          <Dropdown.Menu>
-            {selectedFilter === "name" ? (
-              <>
-                <Dropdown.Item onClick={() => handleSortByName('asc')}>A to Z</Dropdown.Item>
-                <Dropdown.Item onClick={() => handleSortByName('desc')}>Z to A</Dropdown.Item>
-              </>
-            ) : selectedFilter === "leadCount" ? (
-              <>
-                <Dropdown.Item onClick={() => handleSortByLeadCount('max')}>High to Low</Dropdown.Item>
-                <Dropdown.Item onClick={() => handleSortByLeadCount('min')}>Low to High</Dropdown.Item>
-              </>
-            ) : (
-              <Dropdown.ItemText>Select filter first</Dropdown.ItemText>
-            )}
-          </Dropdown.Menu>
-        </Dropdown>
-      </div>
       <div className="status-counts">
         <span className="count-btn">All({allCount})</span>
         <span className="count-btn">Active({activeCount})</span>
         <span className="count-btn">Inactive({inactiveCount})</span>
+        {/* <div className='locations-drp'>
+        <Dropdown>
+          <Dropdown.Toggle variant="warning" id="location-filter-dropdown">
+            <FaFilter /> Location
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu>
+            <Dropdown.Item onClick={() => setSelectedLocation("")}>All Locations</Dropdown.Item>
+            {locations.map((location, index) => (
+              <Dropdown.Item key={index} onClick={() => setSelectedLocation(location)}>
+                {location}
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+        </div> */}
       </div>
+      
+      {/* Multi-Select Dropdown for Location Filter */}
+      <div className='locations-drp'>
+          <Multiselect
+            options={locations}
+            isObject={false}
+            selectedValues={setSelectedLocations}
+            onSelect={setSelectedLocations}
+            onRemove={setSelectedLocations}
+            placeholder="Filter by Location"
+            showCheckbox
+            closeOnSelect={false}
+            avoidHighlightFirstOption
+          />
+        </div>
+      
+
       <table className="user-table">
         <thead>
           <tr>
             <th>Sr No.</th>
-            <th>Name</th>
+            <th>
+              <Dropdown>
+                <Dropdown.Toggle variant="string" id="string">
+                  NAME
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => handleSortByName('asc')}>
+                    A to Z
+                  </Dropdown.Item>
+                  <Dropdown.Divider />
+                  <Dropdown.Item onClick={() => handleSortByName('desc')}>
+                    Z to A
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+
+            </th>
             <th>Email</th>
             <th>Phone</th>
             <th>States</th>
-            <th>Constant</th>
-            <th>Leads Count</th>
+            <th>Locations</th>
+
+            <th><Dropdown>
+                <Dropdown.Toggle variant="string" id="string">
+                CONSTANT
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => handleSortByConstant('max')}>
+                    High to Low
+                  </Dropdown.Item>
+                  <Dropdown.Divider />
+                  <Dropdown.Item onClick={() => handleSortByConstant('min')}>
+                    Low to High
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </th>
+            <th>
+            <Dropdown>
+                <Dropdown.Toggle variant="string" id="string">
+                  LEAD COUNT
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => handleSortByLeadCount('max')}>
+                    High to Low
+                  </Dropdown.Item>
+                  <Dropdown.Divider />
+                  <Dropdown.Item onClick={() => handleSortByLeadCount('min')}>
+                    Low to High
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </th>
             <th>Website</th>
             <th>Status</th>
             <th>Edit</th>
             {/* Location Filter Dropdown */}
-            <th>
-            <Dropdown>
-  <Dropdown.Toggle variant="warning" id="location-filter-dropdown">
-    <FaFilter /> Location
-  </Dropdown.Toggle>
-
-  <Dropdown.Menu>
-    <Dropdown.Item onClick={() => setSelectedLocation("")}>All Locations</Dropdown.Item>
-    {locations.map((location, index) => (
-      <Dropdown.Item key={index} onClick={() => setSelectedLocation(location)}>
-        {location}
-      </Dropdown.Item>
-    ))}
-  </Dropdown.Menu>
-</Dropdown>
-
-            </th>
+            
           </tr>
         </thead>
         <tbody>
@@ -305,6 +348,7 @@ const toggleUserStatus = async (userId) => {
                 <td>{user.email}</td>
                 <td>{user.phone || "N/A"}</td>
                 <td>{user.states.length > 0 ? user.states.join(", ") : "N/A"}</td>
+                <td>{user.location_name || "N/A"}</td>
                 <td>{user.constant || "N/A"}</td>
                 <td>{user.leads_count}</td>
                 <td>
@@ -332,7 +376,7 @@ const toggleUserStatus = async (userId) => {
                 <td>
                   <button onClick={() => handleEdit(user)} className='Edit-Button'>✏️Edit</button>
                 </td>
-                <td>{user.location_name || "N/A"}</td>
+                
               </tr>
             ))
           ) : (

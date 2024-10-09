@@ -204,7 +204,7 @@ body {
 .status-counts {
   display: flex;
   justify-content: space-around;
-  margin-bottom: 10px;
+  margin: 20px 0px 10px 0px;
 }
 
 .count-btn {
@@ -280,12 +280,13 @@ body {
 .user-table {
   width: 100%;
   border-collapse: collapse;
+  overflow-x: auto;
+  display: block; /*  table can scroll horizontally */
 }
 
 .user-table th, .user-table td {
   padding: 10px;
   text-align: left;
-  /* border: 1px solid #ddd; */
 }
 
 .user-table th {
@@ -293,17 +294,12 @@ body {
 }
 
 .Edit-Button {
-  /* background-color: ; */
   color: white;
   border: none;
   padding: 5px 10px;
   border-radius: 5px;
   cursor: pointer;
 }
-
-/* .Edit-Button:hover {
-  background-color: #45a049;
-} */
 
 .user-table a {
   color: #3498db;
@@ -314,7 +310,6 @@ body {
   text-decoration: underline;
 }
 
-/* Optional: add some style to the hover effect of the rows */
 .user-table tr:hover {
   background-color: #f1f1f1;
 }
@@ -326,6 +321,71 @@ body {
   margin-bottom: 20px; 
 }
 
+
+/* Multiselect Dropdown */
+.multiselect-container {
+  max-width: 550px;
+  /* border: 1px solid #ccc; */
+  border-radius: 5px;
+  /* padding: 10px; */
+  font-family: Arial, sans-serif;
+  margin-bottom: 10px;
+}
+
+.multiselect-container .optionListContainer {
+  max-height: 150px; 
+  overflow-y: auto;
+}
+
+.multiselect-container .selectedListContainer {
+  padding: 5px;
+  background-color: #f7f7f7;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  margin-top: 5px;
+}
+
+.multiselect-container .optionListContainer li {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.multiselect-container .optionListContainer li:hover {
+  background-color: #f0f0f0;
+  color: #000000;
+}
+
+
+/* Dropdown Toggle Button */
+.multiselect-container .dropdown-heading {
+  display: inline-block;
+  padding: 8px 12px;
+  background-color: #f0ad4e;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.multiselect-container .dropdown-heading:hover {
+  background-color: #ec971f;
+}
+
+.multiselect-container .close-icon {
+  float: right;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+}
 
 @media only screen and (min-width: 768px) and (max-width: 1023px),(min-width: 1024px) and (max-width: 1283px) {
   .table-container {
@@ -690,7 +750,7 @@ body {
 .status-counts {
   display: flex;
   justify-content: space-around;
-  margin-bottom: 20px;
+  margin: 20px 0px;
 }
 
 .count-btn {
@@ -785,7 +845,7 @@ body {
 
       .desktop-header h1{
         color: #ffffff;
-        font-size: 18px;
+        font-size: 20px;
         text-align: center;
       }
       
@@ -797,9 +857,10 @@ body {
       
 
     .search-input {
-        width: 180px;
+        width: 190px;
         border: 1px solid #ccc;
         border-radius: 28px;
+        font-size: 14px;
       }
 
       .mobile-filter-sort {
@@ -880,5 +941,9 @@ body {
   border-radius: 20px;
   padding: 8px 15px;
   font-size: 14px;
+}
+
+.locations-drp{
+  display: none;
 }
   }
