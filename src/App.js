@@ -22,8 +22,8 @@ const App= () => {
 const [activeCount, setActiveCount] = useState(0);
 const [inactiveCount, setInactiveCount] = useState(0);
 const [selectedFilter, setSelectedFilter] = useState(""); 
-const [locations, setLocations] = useState([]); // To store available locations
-const [selectedLocation, setSelectedLocation] = useState(""); // To store the selected location
+const [locations, setLocations] = useState([]); 
+const [selectedLocation, setSelectedLocation] = useState(""); 
 const [locationId, setLocationId] = useState(null);
 
 
@@ -31,7 +31,7 @@ const [locationId, setLocationId] = useState(null);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://leadsystem.highsierraleads.com/get-users");
+        const response = await axios.post("https://leadsystem.highsierraleads.com/get-users");
         setUsers(response.data.users);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -72,22 +72,6 @@ const [locationId, setLocationId] = useState(null);
     setCurrentPage(pageNumber);
   };
 
-  const toggleUserStatus = async (userId) => {
-    try {
-      await axios.post("https://leadsystem.highsierraleads.com/user/status-toggle", {
-        user_id: userId,
-      });
-      setUsers((prevUsers) =>
-        prevUsers.map((user) =>
-          user.user_id === userId
-            ? { ...user, status: user.status === "active" ? "inactive" : "active" }
-            : user
-        )
-      );
-    } catch (error) {
-      console.error("Error toggling user status:", error);
-    }
-  };
 
   const handleEdit = (user) => {
     setEditUser(user);
@@ -127,16 +111,6 @@ const [locationId, setLocationId] = useState(null);
     );
   };
 
-  // Add state variables to manage active and inactive counts
-
-useEffect(() => {
-  setAllCount(users.length);
-  setActiveCount(users.filter(user => user.status === "active").length);
-  setInactiveCount(users.filter(user => user.status === "inactive").length);
-}, [users]);
-
-
-
 
 // Sorting by Name (A-Z, Z-A)
 const handleSortByName = (order) => {
@@ -165,7 +139,7 @@ const handleSortByLeadCount = (order) => {
 useEffect(() => {
   const fetchData = async () => {
     try {
-      const response = await axios.get("https://leadsystem.highsierraleads.com/get-users");
+      const response = await axios.post("https://leadsystem.highsierraleads.com/get-users");
       const usersData = response.data.users;
       setUsers(usersData);
       
@@ -185,6 +159,48 @@ const filteredUserLocation = users.filter((user) =>
   (selectedLocation === "" || user.location_name === selectedLocation)
 );
 
+
+useEffect(() => {
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.post("https://leadsystem.highsierraleads.com/get-users");
+      const usersData = response.data.users;
+      setUsers(usersData);
+      
+      setAllCount(usersData.length);
+      setActiveCount(usersData.filter(user => user.active).length);
+      setInactiveCount(usersData.filter(user => !user.active).length);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+
+  fetchUsers();
+}, []);
+
+const toggleUserStatus = async (userId) => {
+  try {
+    await axios.post("https://leadsystem.highsierraleads.com/user/status-toggle", {
+      user_id: userId,
+    });
+    
+    setUsers(prevUsers =>
+      prevUsers.map(user =>
+        user.user_id === userId ? { ...user, active: !user.active } : user
+      )
+    );
+
+    const updatedUsers = users.map(user =>
+      user.user_id === userId ? { ...user, active: !user.active } : user
+    );
+    setAllCount(updatedUsers.length);
+    setActiveCount(updatedUsers.filter(user => user.active).length);
+    setInactiveCount(updatedUsers.filter(user => !user.active).length);
+    
+  } catch (error) {
+    console.error("Error toggling user status:", error);
+  }
+};
 
   return (
     <div className="table-container">
@@ -245,7 +261,6 @@ const filteredUserLocation = users.filter((user) =>
         <span className="count-btn">Active({activeCount})</span>
         <span className="count-btn">Inactive({inactiveCount})</span>
       </div>
-
       <table className="user-table">
         <thead>
           <tr>
@@ -301,16 +316,17 @@ const filteredUserLocation = users.filter((user) =>
                   )}
                 </td>
                 <td>
-                  <button onClick={() => toggleUserStatus(user.user_id)}
-                    style={{
-                        backgroundColor: user.status === "active" ? "#9de09e" : "#faaaab",
-                        color: "white",
-                        border: "none",
-                        padding: "5px 10px",
-                        borderRadius: "5px",
-                      }}>
-                    {user.status === "active" ? "Activate" : "Inactivate"}
-                  </button>
+                  <button
+                  onClick={() => toggleUserStatus(user.user_id)}
+                  style={{
+                    backgroundColor: user.active ? "#9de09e" : "#faaaab",
+                    color: "white",
+                    border: "none",
+                    padding: "5px 10px",
+                    borderRadius: "5px",
+                  }}>
+                  {user.active ? "Active" : "Inactive"}
+                </button>
                 </td>
                 <td>
                   <button onClick={() => handleEdit(user)} className='Edit-Button'>✏️Edit</button>
