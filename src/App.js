@@ -8,6 +8,7 @@ import Multiselect from 'multiselect-react-dropdown';
 
 const App= () => {
   const [users, setUsers] = useState([]);
+  const [cloneUsers, setCloneUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage, setUsersPerPage] = useState(10);
@@ -41,6 +42,10 @@ const [selectedLocations, setSelectedLocations] = useState([]);
 
     fetchData();
   }, []);
+
+  useEffect(()=>{
+    setCloneUsers([...users])
+  },[users])
 
   useEffect(() => {
     const fetchStates = async () => {
@@ -224,7 +229,7 @@ useEffect(() => {
       const response = await axios.post("https://leadsystem.highsierraleads.com/get-users");
       setUsers(response.data.users);
       
-      // Extract unique locations
+
       const uniqueLocations = [...new Set(response.data.users.map(user => user.location_name))];
       setLocations(uniqueLocations);
     } catch (error) {
@@ -237,19 +242,21 @@ useEffect(() => {
 
 const handleLocationChange = async (selectedList) => {
   setSelectedLocations(selectedList);
-
+//  console.log(selectedList)
   // Prepare the location ID array from selected list
   const locationIds = selectedList.map(location => {
     const user = users.find(user => user.location_name === location);
+    console.log(user)
     return user ? user.location_id : null;
   }).filter(id => id !== null);
 
+  console.log(locationIds)
   // Make the API call with the selected location IDs
   try {
     const response = await axios.post("https://leadsystem.highsierraleads.com/get-users", {
       locations: locationIds
     });
-    setUsers(response.data.users);
+    setCloneUsers(response.data.users);
   } catch (error) {
     console.error("Error fetching filtered users:", error);
   }
