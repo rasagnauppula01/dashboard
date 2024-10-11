@@ -140,6 +140,7 @@ const [selectedLocation, setSelectedLocation] = useState("");
     }
   };
 
+
   // Toggle user active/inactive status
   const toggleUserStatus = async (userId) => {
     try {
@@ -154,8 +155,9 @@ const [selectedLocation, setSelectedLocation] = useState("");
       const updatedUsers = users.map(user =>
         user.user_id === userId ? { ...user, active: !user.active } : user
       );
-      setActiveCount(updatedUsers.filter(user => user.active).length);
-      setInactiveCount(updatedUsers.filter(user => !user.active).length);
+      setAllCount(updatedUsers.length);
+    setActiveCount(updatedUsers.filter(user => user.active).length);
+    setInactiveCount(updatedUsers.filter(user => !user.active).length);
     } catch (error) {
       console.error("Error toggling user status:", error);
     }
