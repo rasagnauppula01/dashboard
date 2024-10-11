@@ -25,7 +25,7 @@ const App = () => {
   const [locations, setLocations] = useState([]);
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [locationId, setLocationId] = useState(null);
-const [selectedLocation, setSelectedLocation] = useState(""); 
+  const [selectedLocation, setSelectedLocation] = useState(""); 
 
   // Fetch users
   useEffect(() => {
@@ -80,7 +80,7 @@ const [selectedLocation, setSelectedLocation] = useState("");
   // Pagination logic
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+  let currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
   const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
 
   const handlePageChange = (pageNumber) => {
@@ -89,75 +89,100 @@ const [selectedLocation, setSelectedLocation] = useState("");
 
   // Handle Edit User
   const handleEdit = (user) => {
+    // setEditUser(user);
+    // setShowEditModal(true);
+
     setEditUser(user);
     setSelectedStates(user.states);
     setConstant(user.constant);
     setWebsite(user.website);
+    setLocationId(user.location_id); 
     setShowEditModal(true);
+    
   };
 
   // Save edited user data
   // const handleSave = async () => {
   //   try {
-  //     await axios.post("https://leadsystem.highsierraleads.com/user/update", {
+  //     let payload = {
   //       user_id: editUser.user_id,
   //       constant: constant,
   //       website: website,
   //       states: selectedStates,
-  //       location_id: locationId,
-  //     });
-  //     setUsers((prevUsers) =>
-  //       prevUsers.map((user) =>
-  //         user.user_id === editUser.user_id
-  //           ? { ...user, constant, website, states: selectedStates,location_id: locationId  }
-  //           : user
-  //       )
-  //     );
+  //       location_id: editUser.location_id,
+  //     };
+
+  //     let resp = await axios.post("https://leadsystem.highsierraleads.com/user/update", payload);
+
+  //     if(resp.data){
+  //       let temp_users = [...users];
+  //       temp_users.map((user) => {
+  //         if(user.user_id === editUser.user_id){
+  //           user = {...payload};
+  //         }
+  //       })
+  //       setUsers([...temp_users]);
+  //       currentUsers = [...temp_users];
+  //     }
+
   //     setShowEditModal(false);
-  //   } catch (error) {
+  //     } catch (error) {
   //     console.error("Error updating user:", error);
   //   }
   // };
+
   const handleSave = async () => {
     try {
-      await axios.post("https://leadsystem.highsierraleads.com/user/update", {
+      let payload = {
         user_id: editUser.user_id,
         constant: constant,
         website: website,
         states: selectedStates,
         location_id: locationId,
-      });
-      setUsers((prevUsers) =>
-        prevUsers.map((user) =>
-          user.user_id === editUser.user_id
-            ? { ...user, constant, website, states: selectedStates, location_id: locationId }
-            : user
-        )
-      );
-      setShowEditModal(false);
+      };
+  
+      let resp = await axios.post("https://leadsystem.highsierraleads.com/user/update", payload);
+  
+      if (resp.data) {
+        // Create new updated users array
+        let updatedUsers = users.map((user) =>
+          user.user_id === editUser.user_id ? { ...user, ...payload } : user
+        );
+        setUsers(updatedUsers);
+        setCloneUsers(updatedUsers);
+  
+        // Close the modal after saving
+        setShowEditModal(false);
+      } else {
+        alert("Failed to update user");
+      }
     } catch (error) {
       console.error("Error updating user:", error);
     }
   };
-
+  
 
   // Toggle user active/inactive status
   const toggleUserStatus = async (userId) => {
     try {
-      await axios.post("https://leadsystem.highsierraleads.com/user/status-toggle", {
+      let resp = await axios.post("https://leadsystem.highsierraleads.com/user/status-toggle", {
         user_id: userId,
       });
-      setUsers(prevUsers =>
-        prevUsers.map(user =>
-          user.user_id === userId ? { ...user, active: !user.active } : user
-        )
-      );
-      const updatedUsers = users.map(user =>
-        user.user_id === userId ? { ...user, active: !user.active } : user
-      );
-      setAllCount(updatedUsers.length);
-    setActiveCount(updatedUsers.filter(user => user.active).length);
-    setInactiveCount(updatedUsers.filter(user => !user.active).length);
+      if(resp.data){
+        let temp_users = [...users];
+        temp_users.map((user) => {
+          if(user.user_id === userId){
+            user.active = !user.active;
+          }
+        })
+        setUsers([...temp_users]);
+        currentUsers = [...temp_users];
+        setActiveCount(currentUsers.filter(user => user.active).length);
+        setInactiveCount(currentUsers.filter(user => !user.active).length);
+      }
+      else{
+        alert("Something went wrong! Please try after some time");
+      }
     } catch (error) {
       console.error("Error toggling user status:", error);
     }
@@ -294,7 +319,6 @@ const [selectedLocation, setSelectedLocation] = useState("");
                     "N/A"
                   )}
                 </td>
-              
               <td>{user.constant}</td>
               <td>{user.leads_count}</td>
               <td>
@@ -446,7 +470,7 @@ const [selectedLocation, setSelectedLocation] = useState("");
       </div>
 
       {/* Edit Modal */}
-      <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
+      {/* <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Edit User</Modal.Title>
         </Modal.Header>
@@ -486,6 +510,53 @@ const [selectedLocation, setSelectedLocation] = useState("");
           </Button>
           <Button variant="primary" onClick={handleSave}>
             Save
+          </Button>
+        </Modal.Footer>
+      </Modal> */}
+      <Modal show={showEditModal} onHide={() => setShowEditModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Participant</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group controlId="states">
+              <Form.Label>States</Form.Label>
+              <Multiselect
+                options={states} // List of options
+                selectedValues={selectedStates} // Preselected values
+                onSelect={(selectedList) => setSelectedStates(selectedList)} // Function when an item is selected
+                onRemove={(selectedList) => setSelectedStates(selectedList)} // Function when an item is removed
+                displayValue="name" // Property to display
+                isObject={false} // States array is a list of strings, not objects
+              />
+            </Form.Group>
+            <Form.Group controlId="website">
+              <Form.Label>Website URL</Form.Label>
+              <Form.Control
+                type="url"
+                placeholder="Enter website URL"
+                value={website}
+                onChange={(e) => setWebsite(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group controlId="constant">
+              <Form.Label>Constant (%)</Form.Label>
+              <Form.Control
+                type="number"
+                min="0"
+                max="100"
+                value={constant}
+                onChange={(e) => setConstant(e.target.value)}
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowEditModal(false)}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleSave}>
+            Save Changes
           </Button>
         </Modal.Footer>
       </Modal>
