@@ -97,6 +97,27 @@ const [selectedLocation, setSelectedLocation] = useState("");
   };
 
   // Save edited user data
+  // const handleSave = async () => {
+  //   try {
+  //     await axios.post("https://leadsystem.highsierraleads.com/user/update", {
+  //       user_id: editUser.user_id,
+  //       constant: constant,
+  //       website: website,
+  //       states: selectedStates,
+  //       location_id: locationId,
+  //     });
+  //     setUsers((prevUsers) =>
+  //       prevUsers.map((user) =>
+  //         user.user_id === editUser.user_id
+  //           ? { ...user, constant, website, states: selectedStates,location_id: locationId  }
+  //           : user
+  //       )
+  //     );
+  //     setShowEditModal(false);
+  //   } catch (error) {
+  //     console.error("Error updating user:", error);
+  //   }
+  // };
   const handleSave = async () => {
     try {
       await axios.post("https://leadsystem.highsierraleads.com/user/update", {
@@ -109,7 +130,7 @@ const [selectedLocation, setSelectedLocation] = useState("");
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
           user.user_id === editUser.user_id
-            ? { ...user, constant, website, states: selectedStates,location_id: locationId  }
+            ? { ...user, constant, website, states: selectedStates, location_id: locationId }
             : user
         )
       );
