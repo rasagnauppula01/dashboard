@@ -1,12 +1,12 @@
 import './App.css';
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { FaChevronLeft, FaChevronRight, FaFilter, FaSort } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight, FaFilter } from "react-icons/fa";
 import { Modal, Button, Form } from "react-bootstrap";
 import Dropdown from 'react-bootstrap/Dropdown';
 import Multiselect from 'multiselect-react-dropdown';
 
-const App= () => {
+const App = () => {
   const [users, setUsers] = useState([]);
   const [cloneUsers, setCloneUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -20,33 +20,37 @@ const App= () => {
   const [constant, setConstant] = useState(0);
   const [website, setWebsite] = useState("");
   const [allCount, setAllCount] = useState(0);
-const [activeCount, setActiveCount] = useState(0);
-const [inactiveCount, setInactiveCount] = useState(0);
-const [selectedFilter, setSelectedFilter] = useState(""); 
-const [locations, setLocations] = useState([]); 
+  const [activeCount, setActiveCount] = useState(0);
+  const [inactiveCount, setInactiveCount] = useState(0);
+  const [locations, setLocations] = useState([]);
+  const [selectedLocations, setSelectedLocations] = useState([]);
+  
 const [selectedLocation, setSelectedLocation] = useState(""); 
-const [locationId, setLocationId] = useState(null);
-const [selectedLocations, setSelectedLocations] = useState([]);
 
-
-
+  // Fetch users
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.post("https://leadsystem.highsierraleads.com/get-users");
-        setUsers(response.data.users);
+        const usersData = response.data.users;
+        setUsers(usersData);
+        setCloneUsers(usersData); // Clone for sorting and filtering
+
+        setAllCount(usersData.length);
+        setActiveCount(usersData.filter(user => user.active).length);
+        setInactiveCount(usersData.filter(user => !user.active).length);
+        
+        // Extract unique locations
+        const uniqueLocations = [...new Set(usersData.map(user => user.location_name))];
+        setLocations(uniqueLocations);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-
     fetchData();
   }, []);
 
-  useEffect(()=>{
-    setCloneUsers([...users])
-  },[users])
-
+  // Fetch states
   useEffect(() => {
     const fetchStates = async () => {
       try {
@@ -56,7 +60,6 @@ const [selectedLocations, setSelectedLocations] = useState([]);
         console.error("Error fetching states:", error);
       }
     };
-
     fetchStates();
   }, []);
 
@@ -65,11 +68,16 @@ const [selectedLocations, setSelectedLocations] = useState([]);
     setCurrentPage(1);
   };
 
-  const filteredUsers = users.filter((user) =>
-    user.name.toLowerCase().includes(searchTerm.toLowerCase())||
-    user.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filtered users by search term and selected locations
+  const filteredUsers = cloneUsers
+    .filter(user => 
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      user.email.toLowerCase().includes(searchTerm.toLowerCase()))
+    .filter(user => 
+      selectedLocations.length === 0 || selectedLocations.includes(user.location_name)
+    );
 
+  // Pagination logic
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
@@ -79,17 +87,16 @@ const [selectedLocations, setSelectedLocations] = useState([]);
     setCurrentPage(pageNumber);
   };
 
-
+  // Handle Edit User
   const handleEdit = (user) => {
     setEditUser(user);
     setSelectedStates(user.states);
     setConstant(user.constant);
     setWebsite(user.website);
-    setLocationId(user.location_id); 
     setShowEditModal(true);
-    
   };
 
+  // Save edited user data
   const handleSave = async () => {
     try {
       await axios.post("https://leadsystem.highsierraleads.com/user/update", {
@@ -97,12 +104,11 @@ const [selectedLocations, setSelectedLocations] = useState([]);
         constant: constant,
         website: website,
         states: selectedStates,
-        location_id: locationId,
       });
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
           user.user_id === editUser.user_id
-            ? { ...user, constant, website, states: selectedStates, location_id: locationId }
+            ? { ...user, constant, website, states: selectedStates }
             : user
         )
       );
@@ -112,156 +118,43 @@ const [selectedLocations, setSelectedLocations] = useState([]);
     }
   };
 
-  const handleStateChange = (state) => {
-    setSelectedStates((prev) =>
-      prev.includes(state) ? prev.filter((s) => s !== state) : [...prev, state]
-    );
-  };
-
-
-// Sorting by Name (A-Z, Z-A)
-const handleSortByName = (order) => {
-  const sortedUsers = [...users].sort((a, b) => {
-    if (order === 'asc') {
-      return a.name.localeCompare(b.name);
-    } else {
-      return b.name.localeCompare(a.name);
-    }
-  });
-  setUsers(sortedUsers);
-};
-
-// Sorting by Lead Count (Max to Min, Min to Max)
-const handleSortByLeadCount = (order) => {
-  const sortedUsers = [...users].sort((a, b) => {
-    if (order === 'max') {
-      return b.leads_count - a.leads_count;
-    } else {
-      return a.leads_count - b.leads_count;
-    }
-  });
-  setUsers(sortedUsers);
-};
-
-// Sorting by constant (Max to Min, Min to Max)
-const handleSortByConstant = (order) => {
-  const sortedUsers = [...users].sort((a, b) => {
-    if (order === 'max') {
-      return b.constant - a.constant;
-    } else {
-      return a.constant - b.constant;
-    }
-  });
-  setUsers(sortedUsers);
-};
-
-useEffect(() => {
-  const fetchData = async () => {
+  // Toggle user active/inactive status
+  const toggleUserStatus = async (userId) => {
     try {
-      const response = await axios.post("https://leadsystem.highsierraleads.com/get-users");
-      const usersData = response.data.users;
-      setUsers(usersData);
-      
-      // Extract unique locations
-      const uniqueLocations = [...new Set(usersData.map(user => user.location_name))];
-      setLocations(uniqueLocations);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  fetchData();
-}, []);
-
-const filteredUserLocation = users.filter((user) =>
-  user.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-  (selectedLocation === "" || user.location_name === selectedLocation)
-);
-
-
-useEffect(() => {
-  const fetchUsers = async () => {
-    try {
-      const response = await axios.post("https://leadsystem.highsierraleads.com/get-users");
-      const usersData = response.data.users;
-      setUsers(usersData);
-      
-      setAllCount(usersData.length);
-      setActiveCount(usersData.filter(user => user.active).length);
-      setInactiveCount(usersData.filter(user => !user.active).length);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    }
-  };
-
-  fetchUsers();
-}, []);
-
-const toggleUserStatus = async (userId) => {
-  try {
-    await axios.post("https://leadsystem.highsierraleads.com/user/status-toggle", {
-      user_id: userId,
-    });
-    
-    setUsers(prevUsers =>
-      prevUsers.map(user =>
+      await axios.post("https://leadsystem.highsierraleads.com/user/status-toggle", {
+        user_id: userId,
+      });
+      setUsers(prevUsers =>
+        prevUsers.map(user =>
+          user.user_id === userId ? { ...user, active: !user.active } : user
+        )
+      );
+      const updatedUsers = users.map(user =>
         user.user_id === userId ? { ...user, active: !user.active } : user
-      )
-    );
-
-    const updatedUsers = users.map(user =>
-      user.user_id === userId ? { ...user, active: !user.active } : user
-    );
-    setAllCount(updatedUsers.length);
-    setActiveCount(updatedUsers.filter(user => user.active).length);
-    setInactiveCount(updatedUsers.filter(user => !user.active).length);
-    
-  } catch (error) {
-    console.error("Error toggling user status:", error);
-  }
-};
-
-
-
-useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const response = await axios.post("https://leadsystem.highsierraleads.com/get-users");
-      setUsers(response.data.users);
-      
-
-      const uniqueLocations = [...new Set(response.data.users.map(user => user.location_name))];
-      setLocations(uniqueLocations);
+      );
+      setActiveCount(updatedUsers.filter(user => user.active).length);
+      setInactiveCount(updatedUsers.filter(user => !user.active).length);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error("Error toggling user status:", error);
     }
   };
 
-  fetchData();
-}, []);
-
-const handleLocationChange = async (selectedList) => {
-  setSelectedLocations(selectedList);
-//  console.log(selectedList)
-  // Prepare the location ID array from selected list
-  const locationIds = selectedList.map(location => {
-    const user = users.find(user => user.location_name === location);
-    console.log(user)
-    return user ? user.location_id : null;
-  }).filter(id => id !== null);
-
-  console.log(locationIds)
-  // Make the API call with the selected location IDs
-  try {
-    const response = await axios.post("https://leadsystem.highsierraleads.com/get-users", {
-      locations: locationIds
+  // Handle sorting by Name, Lead Count, and Constant
+  const handleSort = (field, order) => {
+    const sortedUsers = [...cloneUsers].sort((a, b) => {
+      if (order === 'asc' || order === 'min') {
+        return a[field] > b[field] ? 1 : -1;
+      } else {
+        return a[field] < b[field] ? 1 : -1;
+      }
     });
-    setCloneUsers(response.data.users);
-  } catch (error) {
-    console.error("Error fetching filtered users:", error);
-  }
-};
+    setCloneUsers(sortedUsers);
+  };
 
+  // Handle location filter
+  const handleLocationChange = (selectedList) => {
+    setSelectedLocations(selectedList);
+  };
 
   return (
     <div className="table-container">
@@ -285,7 +178,7 @@ const handleLocationChange = async (selectedList) => {
         <span className="count-btn">Active({activeCount})</span>
         <span className="count-btn">Inactive({inactiveCount})</span>
       </div>
-      
+
       {/* Multi-Select Dropdown for Location Filter */}
       <div className='locations-drp'>
         <Multiselect
@@ -299,8 +192,7 @@ const handleLocationChange = async (selectedList) => {
           closeOnSelect={false}
           avoidHighlightFirstOption
         />
-        </div>
-      
+      </div>
 
       <table className="user-table">
         <thead>
@@ -311,89 +203,67 @@ const handleLocationChange = async (selectedList) => {
                 <Dropdown.Toggle variant="string" id="string">
                   NAME
                 </Dropdown.Toggle>
-
                 <Dropdown.Menu>
-                  <Dropdown.Item onClick={() => handleSortByName('asc')}>
+                  <Dropdown.Item onClick={() => handleSort('name', 'asc')}>
                     A to Z
                   </Dropdown.Item>
-                  <Dropdown.Divider />
-                  <Dropdown.Item onClick={() => handleSortByName('desc')}>
+                  <Dropdown.Item onClick={() => handleSort('name', 'desc')}>
                     Z to A
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
-
             </th>
             <th>Email</th>
             <th>Phone</th>
             <th>States</th>
             <th>Locations</th>
-
-            <th><Dropdown>
+            <th>
+              <Dropdown>
                 <Dropdown.Toggle variant="string" id="string">
-                CONSTANT
+                  CONSTANT
                 </Dropdown.Toggle>
-
                 <Dropdown.Menu>
-                  <Dropdown.Item onClick={() => handleSortByConstant('max')}>
+                  <Dropdown.Item onClick={() => handleSort('constant', 'max')}>
                     High to Low
                   </Dropdown.Item>
-                  <Dropdown.Divider />
-                  <Dropdown.Item onClick={() => handleSortByConstant('min')}>
+                  <Dropdown.Item onClick={() => handleSort('constant', 'min')}>
                     Low to High
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </th>
             <th>
-            <Dropdown>
+              <Dropdown>
                 <Dropdown.Toggle variant="string" id="string">
                   LEAD COUNT
                 </Dropdown.Toggle>
-
                 <Dropdown.Menu>
-                  <Dropdown.Item onClick={() => handleSortByLeadCount('max')}>
+                  <Dropdown.Item onClick={() => handleSort('leads_count', 'max')}>
                     High to Low
                   </Dropdown.Item>
-                  <Dropdown.Divider />
-                  <Dropdown.Item onClick={() => handleSortByLeadCount('min')}>
+                  <Dropdown.Item onClick={() => handleSort('leads_count', 'min')}>
                     Low to High
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </th>
-            <th>Website</th>
             <th>Status</th>
             <th>Edit</th>
-            {/* Location Filter Dropdown */}
-            
           </tr>
         </thead>
         <tbody>
-        
-          {currentUsers.length > 0 ? (
-            currentUsers.map((user, index) => (
-              <tr key={user.user_id}>
-                <td>{indexOfFirstUser + index + 1}</td>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.phone || "N/A"}</td>
-                <td>{user.states.length > 0 ? user.states.join(", ") : "N/A"}</td>
-                <td>{user.location_name || "N/A"}</td>
-                <td>{user.constant || "N/A"}</td>
-                <td>{user.leads_count}</td>
-                <td>
-                  {user.website ? (
-                    <a href={user.website} target="_blank" rel="noopener noreferrer">
-                      {user.website}
-                    </a>
-                  ) : (
-                    "N/A"
-                  )}
-                </td>
-                <td>
-                  <button
-                  onClick={() => toggleUserStatus(user.user_id)}
+          {currentUsers.map((user, index) => (
+            <tr key={user.user_id}>
+              <td>{index + 1 + indexOfFirstUser}</td>
+              <td>{user.name}</td>
+              <td>{user.email}</td>
+              <td>{user.phone}</td>
+              <td>{user.states ? user.states.join(', ') : ''}</td>
+              <td>{user.location_name}</td>
+              <td>{user.constant}</td>
+              <td>{user.leads_count}</td>
+              <td>
+                <button onClick={() => toggleUserStatus(user.user_id)}
                   style={{
                     backgroundColor: user.active ? "#9de09e" : "#faaaab",
                     color: "white",
@@ -403,30 +273,22 @@ const handleLocationChange = async (selectedList) => {
                   }}>
                   {user.active ? "Active" : "Inactive"}
                 </button>
-                </td>
-                <td>
-                  <button onClick={() => handleEdit(user)} className='Edit-Button'>✏️Edit</button>
-                </td>
-                
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="10">No data available</td>
+              </td>
+              <td>
+                <button onClick={() => handleEdit(user)} className='Edit-Button'>✏️Edit</button>
+              </td>
             </tr>
-          )}
+          ))}
         </tbody>
       </table>
+
 
       {/* Mobile view */}
       <div className="mobile-user-table">
         
-    <div className="mobile-user-table">
-      {/* Filter By Dropdown */}
-      
-  </div>
+    
   <div className="location-dropdown-center">
-  <Dropdown>
+  {/* <Dropdown>
     <Dropdown.Toggle variant="warning" id="location-filter-dropdown">
       <FaFilter /> Location
     </Dropdown.Toggle>
@@ -439,10 +301,8 @@ const handleLocationChange = async (selectedList) => {
         </Dropdown.Item>
       ))}
     </Dropdown.Menu>
-  </Dropdown>
+  </Dropdown> */}
 </div>
-
-
 
         {currentUsers.length > 0 ? (
           currentUsers.map((user) => (
@@ -514,90 +374,86 @@ const handleLocationChange = async (selectedList) => {
         )}
       </div>
 
-<Modal show={showEditModal} onHide={() => setShowEditModal(false)} centered>
+      {/* Pagination */}
+      <div className="pagination">
+        <div className="pagination-controls">
+          <FaChevronLeft
+            onClick={() => handlePageChange(currentPage > 1 ? currentPage - 1 : 1)}
+          />
+          {Array.from({ length: totalPages }, (_, i) => (
+            <span
+              key={i + 1}
+              className={i + 1 === currentPage ? "active" : ""}
+              onClick={() => handlePageChange(i + 1)}
+            >
+              {i + 1}
+            </span>
+          ))}
+          <FaChevronRight
+            onClick={() => handlePageChange(currentPage < totalPages ? currentPage + 1 : totalPages)}
+          />
+        </div>
+        <div className="pagination-items-per-page">
+         
+          <Dropdown>
+            <Dropdown.Toggle variant="string" id="string">
+              {usersPerPage}
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              {itemsPerPage.map((item) => (
+                <Dropdown.Item key={item} onClick={() => setUsersPerPage(item)}>
+                  {item}
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
+      </div>
+
+      {/* Edit Modal */}
+      <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Participant</Modal.Title>
+          <Modal.Title>Edit User</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Group controlId="states">
-              <Form.Label>States</Form.Label>
-              <Multiselect
-                options={states} // List of options
-                selectedValues={selectedStates} // Preselected values
-                onSelect={(selectedList) => setSelectedStates(selectedList)} // Function when an item is selected
-                onRemove={(selectedList) => setSelectedStates(selectedList)} // Function when an item is removed
-                displayValue="name" // Property to display
-                isObject={false} // States array is a list of strings, not objects
+            <Form.Group>
+              <Form.Label>Constant</Form.Label>
+              <Form.Control
+                type="number"
+                value={constant}
+                onChange={(e) => setConstant(e.target.value)}
               />
             </Form.Group>
-            <Form.Group controlId="website">
-              <Form.Label>Website URL</Form.Label>
+            <Form.Group>
+              <Form.Label>Website</Form.Label>
               <Form.Control
-                type="url"
-                placeholder="Enter website URL"
+                type="text"
                 value={website}
                 onChange={(e) => setWebsite(e.target.value)}
               />
             </Form.Group>
-            <Form.Group controlId="constant">
-              <Form.Label>Constant (%)</Form.Label>
-              <Form.Control
-                type="number"
-                min="0"
-                max="100"
-                value={constant}
-                onChange={(e) => setConstant(e.target.value)}
+            <Form.Group>
+              <Form.Label>States</Form.Label>
+              <Multiselect
+                options={states}
+                selectedValues={selectedStates}
+                isObject={false}
+                onSelect={(selectedList) => setSelectedStates(selectedList)}
+                onRemove={(selectedList) => setSelectedStates(selectedList)}
               />
             </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowEditModal(false)}>
-            Close
+            Cancel
           </Button>
           <Button variant="primary" onClick={handleSave}>
-            Save Changes
+            Save
           </Button>
         </Modal.Footer>
       </Modal>
-
-  <div className="pagination">
-  <button
-    onClick={() => handlePageChange(currentPage - 1)}
-    disabled={currentPage === 1}
-  >
-   <FaChevronLeft />
-  </button>
-  
-  {Array.from({ length: totalPages }, (_, i) => (
-    <button
-      key={i + 1}
-      onClick={() => handlePageChange(i + 1)}
-      className={currentPage === i + 1 ? "active" : ""}
-    >
-      {i + 1}
-    </button>
-  ))}
-
-  <button
-    onClick={() => handlePageChange(currentPage + 1)}
-    disabled={currentPage === totalPages}
-  >
-    <FaChevronRight />
-  </button>
-
-  <select id="itemsPerPage" value={usersPerPage} onChange={(e)=>setUsersPerPage(e.target.value)}>
-    {
-      (itemsPerPage && itemsPerPage.length > 0)
-      &&
-      itemsPerPage.map((opt, index)=>(
-        <option key={index} value={opt}>{opt}</option>
-      ))
-    }
-  </select>
-</div>
-
     </div>
   );
 };

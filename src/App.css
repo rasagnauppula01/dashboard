@@ -7,9 +7,151 @@ body {
   }
 
   .scrollable-checkboxes {
-    max-height: 300px; 
+    max-height: 250px; 
     overflow-y: auto;
   }
+
+  
+  /* General styles */
+.table-container {
+    /* margin: 20px; */
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Header */
+  .header-bg {
+    background-color: #f8f9fa;
+    /* padding: 20px; */
+  }
+  
+  .desktop-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  /* Search bar */
+  .search-folder {
+    margin-right: 20px;
+  }
+  
+  .search-input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 250px;
+  }
+  
+  /* Status counts with color and spacing */
+  .status-counts {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .count-btn {
+    background-color: #72C1DC;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  
+  /* Table styling */
+  .user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .user-table th,
+  .user-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  /* No color for dropdown buttons */
+  .user-table th .dropdown-toggle,
+  .user-table td .dropdown-toggle {
+    background-color: transparent;
+    border: none;
+    color: inherit;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  /* Active/Inactive button styles */
+  .user-table button {
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .user-table button.active {
+    background-color: #9de09e;
+    color: #fff;
+  }
+  
+  .user-table button.inactive {
+    background-color: #faaaab;
+    color: #fff;
+  }
+  
+  .Edit-Button{
+    background-color: #72b8dc;
+  }
+  /* Pagination styling */
+  .pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .pagination-controls {
+    display: flex;
+    align-items: center;
+  }
+  
+  .pagination-controls span {
+    padding: 10px 20px;
+    margin: 0 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #f8f9fa;
+  }
+  
+  .pagination-controls span.active {
+    background-color: #72C1DC;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .pagination-items-per-page {
+    display: flex;
+    align-items: center;
+  }
+  
+  .pagination-items-per-page span {
+    margin-right: 10px;
+  }
+  
+  .pagination-items-per-page .dropdown-toggle {
+    background-color: transparent;
+    border: none;
+    font-weight: bold;
+    color: #007bff;
+  }
+  
+  .pagination-controls .fa-chevron-left,
+  .pagination-controls .fa-chevron-right {
+    cursor: pointer;
+    padding: 10px;
+  }
+  
   
 .table-container {
   width: 100%;
@@ -30,13 +172,12 @@ body {
     margin: 0 auto;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border: 1px solid #ffffff;
-    /* border-radius: 28px; */
+    border-radius: 28px;
     background-color: #ffffff;
   }
   
   .user-table th,
   .user-table td {
-    width: 100%;
     padding: 22px 18px;
     text-align: left;
     
@@ -74,7 +215,6 @@ body {
   
   /* header stylings */
   .desktop-header {
-    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -101,19 +241,6 @@ body {
     border: 1px solid #D9D9DC;
     padding: 5px;
     display: flex;
-  }
-  
-  .Edit-Button{
-    border: none;
-  color: white;
-  padding: 10px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  cursor: pointer;
-  background-color: #72c1dc;
-  border-radius: 5px;
   }
   
   .search-input {
@@ -180,226 +307,13 @@ body {
 .mobile-user-table{
     display: none;
 }
-.filter-sort-rows {
-  display: flex;
-  justify-content: space-evenly;
-  margin: 10px;
-}
 
-.filter-btn, .sort-btn {
-  display: flex;
-  align-items: center;
-  background-color: #FFA500;
-  color: #333;
-  border: 1px solid #DBDBDB;
-  border-radius: 2px;
-  padding: 25px 50px;
-  font-size: 14px;
-}
-
-.filter-btn svg, .sort-btn svg {
-  margin-right: 5px;
-}
-
-/* ALL, ACTIVE, INACTIVE count buttons */
-.status-counts {
-  display: flex;
-  justify-content: space-around;
-  margin: 20px 0px 10px 0px;
-}
-
-.count-btn {
-  background-color: #72c1dc;
-  border-radius: 20px;
-  padding: 8px 15px;
-  font-size: 14px;
-}
-
-
-
-.pagination {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.pagination button {
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  color: #333;
-  padding: 8px 12px;
-  margin: 0 5px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.pagination button:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-
-.pagination button:hover:not(:disabled) {
-  background-color: #e0e0e0;
-}
-
-.pagination .active {
-  background-color: #007bff;
-  color: white;
-  border-color: #007bff;
-}
-
-.pagination select {
-  margin-left: 15px;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: white;
-  cursor: pointer;
-  color: #333;
-}
-
-.pagination select:focus {
-  outline: none;
-  border-color: #007bff;
-}
-
-.pagination option {
-  padding: 10px;
-  background-color: white;
-}
-
-
-
-.table-container {
-  max-width: 100%;
-  overflow-x: auto;
-  
-}
-
-.user-table {
-  width: 100%;
-  border-collapse: collapse;
-  overflow-x: auto;
-  display: block; /*  table can scroll horizontally */
-}
-
-.user-table th, .user-table td {
-  padding: 10px;
-  text-align: left;
-}
-
-.user-table th {
-  background-color: #f4f4f4;
-}
-
-.Edit-Button {
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.user-table a {
-  color: #3498db;
-  text-decoration: none;
-}
-
-.user-table a:hover {
-  text-decoration: underline;
-}
-
-.user-table tr:hover {
-  background-color: #f1f1f1;
-}
-
-.location-dropdown-center {
-  display: flex;
-  justify-content: center; 
-  align-items: center;     
-  margin-bottom: 20px; 
-}
-
-
-/* Multiselect Dropdown */
-.multiselect-container {
-  max-width: 550px;
-  /* border: 1px solid #ccc; */
-  border-radius: 5px;
-  /* padding: 10px; */
-  font-family: Arial, sans-serif;
-  margin-bottom: 10px;
-  padding-left: 20px;
-}
-
-.multiselect-container .optionListContainer {
-  max-height: 150px; 
-  overflow-y: auto;
-}
-
-.multiselect-container .selectedListContainer {
-  padding: 5px;
-  background-color: #f7f7f7;
-  /* border: 1px solid #ddd; */
-  border-radius: 3px;
-  margin-top: 5px;
-}
-
-.multiselect-container .optionListContainer li {
-  padding: 5px;
-  cursor: pointer;
-}
-
-.multiselect-container .optionListContainer li:hover {
-  background-color: #f0f0f0;
-  color: #000000;
-}
-
-
-/* Dropdown Toggle Button */
-.multiselect-container .dropdown-heading {
-  display: inline-block;
-  padding: 8px 12px;
-  background-color: #f0ad4e;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.multiselect-container .dropdown-heading:hover {
-  background-color: #ec971f;
-}
-
-.multiselect-container .close-icon {
-  float: right;
-  margin-right: 10px;
-  cursor: pointer;
-}
-
-.dropdown-menu {
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.dropdown-item:hover {
-  background-color: #f0f0f0;
-}
 
 @media only screen and (min-width: 768px) and (max-width: 1023px),(min-width: 1024px) and (max-width: 1283px) {
   .table-container {
     width: 1317px; 
     }
-    .user-table {
-      width: 100%;
-      border-collapse: collapse;
-      overflow-x: auto;
-      display: block; /* This ensures the table can scroll horizontally */
-    }
-    
+
     .header-bg{
       width: 100%;
     }
@@ -442,7 +356,7 @@ body {
     
     .user-table th,
     .user-table td {
-      padding: 22px 10px;
+      padding: 22px 18px;
       text-align: left;
       
     }
@@ -526,63 +440,8 @@ body {
 }
 
 .pagination button.active {
-  background-color: #2db0e0;
-    border: 2px solid #111542;
+  background-color:#111542;
 }
-
-.pagination {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.pagination button {
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  color: #333;
-  padding: 8px 12px;
-  margin: 0 5px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.pagination button:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-
-.pagination button:hover:not(:disabled) {
-  background-color: #e0e0e0;
-}
-
-.pagination .active {
-  background-color: #007bff;
-  color: white;
-  border-color: #007bff;
-}
-
-.pagination select {
-  margin-left: 15px;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: white;
-  cursor: pointer;
-  color: #333;
-}
-
-.pagination select:focus {
-  outline: none;
-  border-color: #007bff;
-}
-
-.pagination option {
-  padding: 10px;
-  background-color: white;
-}
-
 
 .dropdown-checkbox {
   max-height: 200px;
@@ -626,10 +485,9 @@ body {
     }
   
     .status-row {
-      display: flex;
       flex-direction: row;
       justify-content: space-between;
-      /* padding: 5px 0; */
+      padding: 5px 0;
     }
     .status-btn{
         margin-right: 51%;
@@ -752,11 +610,11 @@ body {
 .status-counts {
   display: flex;
   justify-content: space-around;
-  margin: 20px 0px;
+  margin-bottom: 20px;
 }
 
 .count-btn {
-  background-color: #72c1dc;
+  background-color: #ddd;
   border-radius: 20px;
   padding: 8px 15px;
   font-size: 14px;
@@ -847,7 +705,7 @@ body {
 
       .desktop-header h1{
         color: #ffffff;
-        font-size: 20px;
+        font-size: 18px;
         text-align: center;
       }
       
@@ -859,10 +717,9 @@ body {
       
 
     .search-input {
-        width: 190px;
+        width: 180px;
         border: 1px solid #ccc;
         border-radius: 28px;
-        font-size: 14px;
       }
 
       .mobile-filter-sort {
@@ -939,13 +796,9 @@ body {
   gap: 5px;
 }
 .count-btn {
-  background-color: #72c1dc;
+  background-color: #ddd;
   border-radius: 20px;
   padding: 8px 15px;
   font-size: 14px;
-}
-
-.locations-drp{
-  display: none;
 }
   }
