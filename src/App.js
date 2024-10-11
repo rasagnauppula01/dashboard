@@ -24,7 +24,7 @@ const App = () => {
   const [inactiveCount, setInactiveCount] = useState(0);
   const [locations, setLocations] = useState([]);
   const [selectedLocations, setSelectedLocations] = useState([]);
-  
+  const [locationId, setLocationId] = useState(null);
 const [selectedLocation, setSelectedLocation] = useState(""); 
 
   // Fetch users
@@ -104,11 +104,12 @@ const [selectedLocation, setSelectedLocation] = useState("");
         constant: constant,
         website: website,
         states: selectedStates,
+        location_id: locationId,
       });
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
           user.user_id === editUser.user_id
-            ? { ...user, constant, website, states: selectedStates }
+            ? { ...user, constant, website, states: selectedStates,location_id: locationId  }
             : user
         )
       );
@@ -217,6 +218,7 @@ const [selectedLocation, setSelectedLocation] = useState("");
             <th>Phone</th>
             <th>States</th>
             <th>Locations</th>
+            <th>Website</th>
             <th>
               <Dropdown>
                 <Dropdown.Toggle variant="string" id="string">
@@ -260,6 +262,16 @@ const [selectedLocation, setSelectedLocation] = useState("");
               <td>{user.phone}</td>
               <td>{user.states ? user.states.join(', ') : ''}</td>
               <td>{user.location_name}</td>
+              <td>
+                  {user.website ? (
+                    <a href={user.website} target="_blank" rel="noopener noreferrer">
+                      {user.website}
+                    </a>
+                  ) : (
+                    "N/A"
+                  )}
+                </td>
+              
               <td>{user.constant}</td>
               <td>{user.leads_count}</td>
               <td>
