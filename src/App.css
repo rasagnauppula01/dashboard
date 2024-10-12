@@ -848,4 +848,12 @@ body {
   display: flex;
   justify-content: space-between;
 }
+.location-dropdown-center{
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 10px;
+}
+.location-dropdown-center .dropdown-toggle{
+  border:1px solid #111542;
+}
   }

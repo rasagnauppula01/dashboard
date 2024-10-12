@@ -361,6 +361,33 @@ const App = () => {
       ))}
     </Dropdown.Menu>
   </Dropdown> */}
+  <Dropdown>
+                <Dropdown.Toggle variant="string" id="string">
+                  NAME
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => handleSort('name', 'asc')}>
+                    A to Z
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => handleSort('name', 'desc')}>
+                    Z to A
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+              
+              <Dropdown>
+                <Dropdown.Toggle variant="string" id="string">
+                  LEAD COUNT
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => handleSort('leads_count', 'max')}>
+                    High to Low
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => handleSort('leads_count', 'min')}>
+                    Low to High
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
 </div>
 
         {currentUsers.length > 0 ? (
