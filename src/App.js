@@ -5,6 +5,9 @@ import { FaChevronLeft, FaChevronRight, FaFilter } from "react-icons/fa";
 import { Modal, Button, Form } from "react-bootstrap";
 import Dropdown from 'react-bootstrap/Dropdown';
 import Multiselect from 'multiselect-react-dropdown';
+import { TailSpin } from 'react-loader-spinner';  // Spinner
+import { toast, ToastContainer } from 'react-toastify'; // Toast notifications
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   const [users, setUsers] = useState([]);
@@ -26,10 +29,12 @@ const App = () => {
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [locationId, setLocationId] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(""); 
+  const [loading, setLoading] = useState(true);  // Add loader state
 
   // Fetch users
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true); // Setting loader to true before fetching data
       try {
         const response = await axios.post("https://leadsystem.highsierraleads.com/get-users");
         const usersData = response.data.users;
@@ -44,7 +49,10 @@ const App = () => {
         const uniqueLocations = [...new Set(usersData.map(user => user.location_name))];
         setLocations(uniqueLocations);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        toast.error("Something went wrong! Please try again later."); // Show toast on error
+        // console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false); // Turn off loader
       }
     };
     fetchData();
@@ -57,7 +65,8 @@ const App = () => {
         const response = await axios.get("https://leadsystem.highsierraleads.com/get-states");
         setStates(response.data.states);
       } catch (error) {
-        console.error("Error fetching states:", error);
+        toast.error("Something went wrong! Please try again later."); // Show toast on error
+        // console.error("Error fetching states:", error);
       }
     };
     fetchStates();
@@ -163,30 +172,56 @@ const App = () => {
   
 
   // Toggle user active/inactive status
-  const toggleUserStatus = async (userId) => {
+  // const toggleUserStatus = async (userId) => {
+  //   try {
+  //     let resp = await axios.post("https://leadsystem.highsierraleads.com/user/status-toggle", {
+  //       user_id: userId,
+  //     });
+  //     if(resp.data){
+  //       let temp_users = [...users];
+  //       temp_users.map((user) => {
+  //         if(user.user_id === userId){
+  //           user.active = !user.active;
+  //         }
+  //       })
+  //       setUsers([...temp_users]);
+  //       currentUsers = [...temp_users];
+  //       setActiveCount(currentUsers.filter(user => user.active).length);
+  //       setInactiveCount(currentUsers.filter(user => !user.active).length);
+  //     }
+  //     else{
+  //       alert("Something went wrong! Please try after some time");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error toggling user status:", error);
+  //   }
+  // };
+
+  const toggleUserStatus = async (userId, isCurrentlyActive) => {
     try {
-      let resp = await axios.post("https://leadsystem.highsierraleads.com/user/status-toggle", {
-        user_id: userId,
-      });
-      if(resp.data){
-        let temp_users = [...users];
-        temp_users.map((user) => {
-          if(user.user_id === userId){
-            user.active = !user.active;
-          }
-        })
-        setUsers([...temp_users]);
-        currentUsers = [...temp_users];
-        setActiveCount(currentUsers.filter(user => user.active).length);
-        setInactiveCount(currentUsers.filter(user => !user.active).length);
-      }
-      else{
-        alert("Something went wrong! Please try after some time");
-      }
+        let newStatus = !isCurrentlyActive; // Flip the status logically
+        
+        let resp = await axios.post("https://leadsystem.highsierraleads.com/user/status-toggle", {
+            user_id: userId,
+            active: newStatus, // Send the new status explicitly
+        });
+
+        if (resp.data) {
+            let updatedUsers = users.map(user =>
+                user.user_id === userId ? { ...user, active: newStatus } : user
+            );
+            setUsers(updatedUsers);
+            setCloneUsers(updatedUsers);
+            setActiveCount(updatedUsers.filter(user => user.active).length);
+            setInactiveCount(updatedUsers.filter(user => !user.active).length);
+        } else {
+            alert("Something went wrong! Please try again.");
+        }
     } catch (error) {
-      console.error("Error toggling user status:", error);
+        console.error("Error toggling user status:", error);
     }
-  };
+};
+
 
   // Handle sorting by Name, Lead Count, and Constant
   const handleSort = (field, order) => {
@@ -225,6 +260,12 @@ const App = () => {
 
   return (
     <div className="table-container">
+      {loading ? (
+         <div className="loader-container">
+         <TailSpin color="#00BFFF" height={80} width={80} />
+       </div>
+     ) : (
+       <>
       <div className="header-bg">
         <header className="desktop-header">
           <h1>Dashboard</h1>
@@ -340,7 +381,7 @@ const App = () => {
               <td>{user.constant}</td>
               <td>{user.leads_count}</td>
               <td>
-                <button onClick={() => toggleUserStatus(user.user_id)}
+                {/* <button onClick={() => toggleUserStatus(user.user_id)}
                   style={{
                     backgroundColor: user.active ? "#9de09e" : "#faaaab",
                     color: "white",
@@ -349,7 +390,18 @@ const App = () => {
                     borderRadius: "5px",
                   }}>
                   {user.active ? "Active" : "Inactive"}
+                </button> */}
+                <button onClick={() => toggleUserStatus(user.user_id, user.active)}
+                    style={{
+                        backgroundColor: user.active ? "#9de09e" : "#faaaab",
+                        color: "white",
+                        border: "none",
+                        padding: "5px 10px",
+                        borderRadius: "5px",
+                    }}>
+                    {user.active ? "Active" : "Inactive"}
                 </button>
+
               </td>
               <td>
                 <button onClick={() => handleEdit(user)} className='Edit-Button'>✏️Edit</button>
@@ -605,6 +657,8 @@ const App = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+      </>
+     )}
     </div>
   );
 };
