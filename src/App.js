@@ -307,9 +307,9 @@ const App = () => {
               <td>{index + 1 + indexOfFirstUser}</td>
               <td>{user.name}</td>
               <td>{user.email}</td>
-              <td>{user.phone}</td>
+              <td>{user.phone || "N/A"}</td>
               <td>{user.states ? user.states.join(', ') : ''}</td>
-              <td>{user.location_name}</td>
+              <td>{user.location_name || "N/A"}</td>
               <td>
                   {user.website ? (
                     <a href={user.website} target="_blank" rel="noopener noreferrer">
@@ -367,16 +367,16 @@ const App = () => {
           currentUsers.map((user) => (
             <div key={user.user_id} className="mobile-user">
               <div className="status-row">
-                <button onClick={() => toggleUserStatus(user.user_id)}
-                    style={{
-                        backgroundColor: user.status === "active" ? "#9de09e" : "#faaaab",
-                        color: "white",
-                        border: "none",
-                        padding: "5px 10px",
-                        borderRadius: "5px",
-                      }} className="status-btn">
-                    {user.status === "active" ? "Activate" : "Inactivate"}
-                  </button>
+              <button onClick={() => toggleUserStatus(user.user_id)}
+                  style={{
+                    backgroundColor: user.active ? "#9de09e" : "#faaaab",
+                    color: "white",
+                    border: "none",
+                    padding: "5px 10px",
+                    borderRadius: "5px",
+                  }}>
+                  {user.active ? "Active" : "Inactive"}
+                </button>
                 <button className='Edit-Button' onClick={() => handleEdit(user)}>✏️</button>
               </div>
 
@@ -396,15 +396,15 @@ const App = () => {
                 </div>
                 <br></br>
               <div className="info-row">
-                <span className="info-left">Name:</span> 
-                <span className="info-right">{user.name}</span> 
+                <span className="info-left">Name: </span> 
+                <span className="info-right"> {user.name}</span> 
               </div>
               <div className="info-row">
-              <span className="info-left">States:</span>
-              <span className="info-right">{user.states.length > 0 ? user.states.join(", ") : "N/A"}</span>
+              <span className="info-left">States: </span>
+              <span className="info-right"> {user.states.length > 0 ? user.states.join(", ") : "N/A"}</span>
               </div>
               <div className="info-row">
-              <span className="info-left">Email:</span>
+              <span className="info-left">Email: </span>
                 <span className="info-right">{user.email}</span>
               </div>
               <div className="info-details">

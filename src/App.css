@@ -13,15 +13,14 @@ body {
   
   /* General styles */
   .table-container {
-    width: 100%; /* or any desired width */
+    width: 100%; 
     overflow-x: auto; /* Enables horizontal scrolling */
   }
   
   .user-table {
-    width: 100%; /* Set a full width for the table */
-    /* table-layout: fixed; Prevents the table from auto-adjusting its size */
-    overflow-x: auto; /* Ensure the table is scrollable within the container */
-    border-collapse: collapse; /* Optional: for a clean look */
+    display: block;
+    width: 100%; 
+    overflow-x: auto; 
   }
   
   
@@ -51,8 +50,16 @@ body {
   
   /* Status counts with color and spacing */
   .status-counts {
-    margin-top: 20px;
+    margin-top: 10px;
     margin-bottom: 20px;
+    display: flex;
+    justify-content: space-around;
+  }
+  .locations-drp{
+    width: 98%;
+    padding: 0 70px;
+    margin-bottom: 20px;
+   
   }
   
   .count-btn {
@@ -110,6 +117,7 @@ body {
   
   .Edit-Button{
     background-color: #72b8dc;
+    border: none;
   }
   /* Pagination styling */
   .pagination {
@@ -125,16 +133,17 @@ body {
   }
   
   .pagination-controls span {
-    padding: 10px 20px;
+    padding: 8px 12px; 
     margin: 0 5px;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 25px;
     cursor: pointer;
     background-color: #f8f9fa;
   }
   
   .pagination-controls span.active {
-    background-color: #72C1DC;
+    background-color: #111542;
+    /* background-color: #72C1DC; */
     color: white;
     font-weight: bold;
   }
@@ -150,9 +159,9 @@ body {
   
   .pagination-items-per-page .dropdown-toggle {
     background-color: transparent;
-    border: none;
+    border: 1px solid #111542;
     font-weight: bold;
-    color: #007bff;
+    color: #72C1DC;;
   }
   
   .pagination-controls .fa-chevron-left,
@@ -353,6 +362,7 @@ body {
       align-items: center;
       color: #F9FCFF;
     }
+    
     
     .user-table {
       width: 100%;
@@ -711,12 +721,14 @@ body {
         background-image: url(./Rectangle\ 13.jpg);
         height: 100px;
         width: 100%;
+        gap: 10px;
         }
 
       .desktop-header h1{
         color: #ffffff;
         font-size: 18px;
         text-align: center;
+        
       }
       
       .search-folder {
@@ -730,6 +742,7 @@ body {
         width: 180px;
         border: 1px solid #ccc;
         border-radius: 28px;
+        font-size: 14px;
       }
 
       .mobile-filter-sort {
@@ -804,11 +817,35 @@ body {
   justify-content: space-around;
   margin-bottom: 20px;
   gap: 5px;
+  
 }
 .count-btn {
-  background-color: #ddd;
+  /* background-color: #ddd; */
+  background-color: #72b8dc;
   border-radius: 20px;
   padding: 8px 15px;
   font-size: 14px;
+}
+
+.user-table button {
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.user-table button.active {
+  background-color: #9de09e;
+  color: #fff;
+}
+
+.user-table button.inactive {
+  background-color: #faaaab;
+  color: #fff;
+}
+
+.status-row{
+  display: flex;
+  justify-content: space-between;
 }
   }
