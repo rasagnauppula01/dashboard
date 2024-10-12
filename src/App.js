@@ -201,9 +201,27 @@ const App = () => {
   };
 
   // Handle location filter
+  // const handleLocationChange = (selectedList) => {
+  //   setSelectedLocations(selectedList);
+  // };
+
   const handleLocationChange = (selectedList) => {
     setSelectedLocations(selectedList);
+  
+    // Filter users by the selected locations
+    const filteredUsersByLocation = cloneUsers.filter(user =>
+      selectedList.length === 0 || selectedList.includes(user.location_name)
+    );
+  
+    // Recalculate active and inactive counts based on the filtered users
+    setActiveCount(filteredUsersByLocation.filter(user => user.active).length);
+    setInactiveCount(filteredUsersByLocation.filter(user => !user.active).length);
+    setAllCount(filteredUsersByLocation.length);
+  
+    // Update the filtered users to display in the table
+    setUsers(filteredUsersByLocation);
   };
+  
 
   return (
     <div className="table-container">
