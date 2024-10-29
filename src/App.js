@@ -144,9 +144,8 @@ const App = () => {
     try {
       let payload = {
         user_id: editUser.user_id,
-        constant: constant,
+        
         website: website,
-        states: selectedStates,
         location_id: locationId,
       };
   
@@ -157,12 +156,14 @@ const App = () => {
         let updatedUsers = users.map((user) =>
           user.user_id === editUser.user_id ? { ...user, ...payload } : user
         );
+        toast.success("URL is updated")
         setUsers(updatedUsers);
         setCloneUsers(updatedUsers);
   
         // Close the modal after saving
         setShowEditModal(false);
       } else {
+        toast.error("fail to update URL")
         alert("Failed to update user");
       }
     } catch (error) {
@@ -659,6 +660,7 @@ const App = () => {
       </Modal>
       </>
      )}
+     <ToastContainer/>
     </div>
   );
 };
