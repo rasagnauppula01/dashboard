@@ -28,7 +28,8 @@ body {
   .user-table {
     display: block;
     width: 100%; 
-    overflow-x: auto; 
+    overflow-x: auto;
+    padding-left: 12%; 
   }
   
   
@@ -380,6 +381,7 @@ body {
       border: 1px solid #ffffff;
       border-radius: 28px;
       background-color: #ffffff;
+      padding-left: 5%;
     }
     
     .user-table th,

@@ -283,12 +283,12 @@ const App = () => {
 
       <div className="status-counts">
         <span className="count-btn">All({allCount})</span>
-        <span className="count-btn">Active({activeCount})</span>
-        <span className="count-btn">Inactive({inactiveCount})</span>
+        {/* <span className="count-btn">Active({activeCount})</span>
+        <span className="count-btn">Inactive({inactiveCount})</span> */}
       </div>
 
       {/* Multi-Select Dropdown for Location Filter */}
-      <div className='locations-drp'>
+      {/* <div className='locations-drp'>
         <Multiselect
           options={locations}
           isObject={false}
@@ -300,7 +300,7 @@ const App = () => {
           closeOnSelect={false}
           avoidHighlightFirstOption
         />
-      </div>
+      </div> */}
 
       <table className="user-table">
         <thead>
@@ -323,10 +323,10 @@ const App = () => {
             </th>
             <th>Email</th>
             <th>Phone</th>
-            <th>States</th>
-            <th>Locations</th>
+            {/* <th>States</th> */}
+            {/* <th>Locations</th> */}
             <th>Website</th>
-            <th>
+            {/* <th>
               <Dropdown>
                 <Dropdown.Toggle variant="string" id="string">
                   CONSTANT
@@ -340,8 +340,8 @@ const App = () => {
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
-            </th>
-            <th>
+            </th> */}
+            {/* <th>
               <Dropdown>
                 <Dropdown.Toggle variant="string" id="string">
                   LEAD COUNT
@@ -355,8 +355,8 @@ const App = () => {
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
-            </th>
-            <th>Status</th>
+            </th> */}
+            {/* <th>Status</th> */}
             <th>Edit</th>
           </tr>
         </thead>
@@ -367,8 +367,8 @@ const App = () => {
               <td>{user.name}</td>
               <td>{user.email}</td>
               <td>{user.phone || "N/A"}</td>
-              <td>{user.states ? user.states.join(', ') : ''}</td>
-              <td>{user.location_name || "N/A"}</td>
+              {/* <td>{user.states ? user.states.join(', ') : ''}</td> */}
+              {/* <td>{user.location_name || "N/A"}</td> */}
               <td>
                   {user.website ? (
                     <a href={user.website} target="_blank" rel="noopener noreferrer">
@@ -378,9 +378,9 @@ const App = () => {
                     "N/A"
                   )}
                 </td>
-              <td>{user.constant}</td>
-              <td>{user.leads_count}</td>
-              <td>
+              {/* <td>{user.constant}</td> */}
+              {/* <td>{user.leads_count}</td> */}
+              {/* <td> */}
                 {/* <button onClick={() => toggleUserStatus(user.user_id)}
                   style={{
                     backgroundColor: user.active ? "#9de09e" : "#faaaab",
@@ -391,7 +391,7 @@ const App = () => {
                   }}>
                   {user.active ? "Active" : "Inactive"}
                 </button> */}
-                <button onClick={() => toggleUserStatus(user.user_id, user.active)}
+                {/* <button onClick={() => toggleUserStatus(user.user_id, user.active)}
                     style={{
                         backgroundColor: user.active ? "#9de09e" : "#faaaab",
                         color: "white",
@@ -400,9 +400,9 @@ const App = () => {
                         borderRadius: "5px",
                     }}>
                     {user.active ? "Active" : "Inactive"}
-                </button>
+                </button> */}
 
-              </td>
+              {/* </td> */}
               <td>
                 <button onClick={() => handleEdit(user)} className='Edit-Button'>✏️Edit</button>
               </td>
@@ -431,7 +431,7 @@ const App = () => {
       ))}
     </Dropdown.Menu>
   </Dropdown> */}
-  <Dropdown>
+              {/* <Dropdown>
                 <Dropdown.Toggle variant="string" id="string">
                   NAME
                 </Dropdown.Toggle>
@@ -443,9 +443,9 @@ const App = () => {
                     Z to A
                   </Dropdown.Item>
                 </Dropdown.Menu>
-              </Dropdown>
+              </Dropdown> */}
               
-              <Dropdown>
+              {/* <Dropdown>
                 <Dropdown.Toggle variant="string" id="string">
                   LEAD COUNT
                 </Dropdown.Toggle>
@@ -457,14 +457,14 @@ const App = () => {
                     Low to High
                   </Dropdown.Item>
                 </Dropdown.Menu>
-              </Dropdown>
+              </Dropdown> */}
 </div>
 
         {currentUsers.length > 0 ? (
           currentUsers.map((user) => (
             <div key={user.user_id} className="mobile-user">
               <div className="status-row">
-              <button onClick={() => toggleUserStatus(user.user_id)}
+              {/* <button onClick={() => toggleUserStatus(user.user_id)}
                   style={{
                     backgroundColor: user.active ? "#9de09e" : "#faaaab",
                     color: "white",
@@ -473,8 +473,8 @@ const App = () => {
                     borderRadius: "5px",
                   }}>
                   {user.active ? "Active" : "Inactive"}
-                </button>
-                <button className='Edit-Button' onClick={() => handleEdit(user)}>✏️</button>
+                </button> */}
+                <button className='Edit-Button' onClick={() => handleEdit(user)}>✏️Edit</button>
               </div>
 
               <div className="column">
@@ -496,10 +496,10 @@ const App = () => {
                 <span className="info-left">Name: </span> 
                 <span className="info-right"> {user.name}</span> 
               </div>
-              <div className="info-row">
+              {/* <div className="info-row">
               <span className="info-left">States: </span>
               <span className="info-right"> {user.states.length > 0 ? user.states.join(", ") : "N/A"}</span>
-              </div>
+              </div> */}
               <div className="info-row">
               <span className="info-left">Email: </span>
                 <span className="info-right">{user.email}</span>
@@ -509,18 +509,18 @@ const App = () => {
                   <span className="th">Phone: </span>
                   <span>{user.phone || "N/A"}</span>
                 </div>
-                <div className="column">
+                {/* <div className="column">
                   <span className="th">Lead Count: </span>
                   <span>{user.leads_count}</span>
-                </div>
-                <div className="column">
+                </div> */}
+                {/* <div className="column">
                   <span className="th">Constant: </span>
                   <span>{user.constant}</span>
-                </div>
-                <div className="column">
+                </div> */}
+                {/* <div className="column">
                   <span className="th">Location: </span>
                   <span>{user.location_name || "N/A"}</span>
-                </div>
+                </div> */}
                 
               </div>
             </div>
@@ -616,7 +616,7 @@ const App = () => {
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Group controlId="states">
+            {/* <Form.Group controlId="states">
               <Form.Label>States</Form.Label>
               <Multiselect
                 options={states} // List of options
@@ -626,7 +626,7 @@ const App = () => {
                 displayValue="name" // Property to display
                 isObject={false} // States array is a list of strings, not objects
               />
-            </Form.Group>
+            </Form.Group> */}
             <Form.Group controlId="website">
               <Form.Label>Website URL</Form.Label>
               <Form.Control
@@ -636,7 +636,7 @@ const App = () => {
                 onChange={(e) => setWebsite(e.target.value)}
               />
             </Form.Group>
-            <Form.Group controlId="constant">
+            {/* <Form.Group controlId="constant">
               <Form.Label>Constant (%)</Form.Label>
               <Form.Control
                 type="number"
@@ -645,7 +645,7 @@ const App = () => {
                 value={constant}
                 onChange={(e) => setConstant(e.target.value)}
               />
-            </Form.Group>
+            </Form.Group> */}
           </Form>
         </Modal.Body>
         <Modal.Footer>
