@@ -5,8 +5,8 @@ import { FaChevronLeft, FaChevronRight, FaFilter } from "react-icons/fa";
 import { Modal, Button, Form } from "react-bootstrap";
 import Dropdown from 'react-bootstrap/Dropdown';
 import Multiselect from 'multiselect-react-dropdown';
-import { TailSpin } from 'react-loader-spinner';  // Spinner
-import { toast, ToastContainer } from 'react-toastify'; // Toast notifications
+import { TailSpin } from 'react-loader-spinner';  
+import { toast, ToastContainer } from 'react-toastify'; 
 import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
@@ -29,7 +29,7 @@ const App = () => {
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [locationId, setLocationId] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(""); 
-  const [loading, setLoading] = useState(true);  // Add loader state
+  const [loading, setLoading] = useState(true);  
 
   // Fetch users
   useEffect(() => {
@@ -49,10 +49,10 @@ const App = () => {
         const uniqueLocations = [...new Set(usersData.map(user => user.location_name))];
         setLocations(uniqueLocations);
       } catch (error) {
-        toast.error("Something went wrong! Please try again later."); // Show toast on error
+        toast.error("Something went wrong! Please try again later."); 
         // console.error("Error fetching data:", error);
       } finally {
-        setLoading(false); // Turn off loader
+        setLoading(false); 
       }
     };
     fetchData();
@@ -65,7 +65,7 @@ const App = () => {
         const response = await axios.get("https://leadsystem.highsierraleads.com/get-states");
         setStates(response.data.states);
       } catch (error) {
-        toast.error("Something went wrong! Please try again later."); // Show toast on error
+        toast.error("Something went wrong! Please try again later."); 
         // console.error("Error fetching states:", error);
       }
     };
@@ -110,35 +110,7 @@ const App = () => {
     
   };
 
-  // Save edited user data
-  // const handleSave = async () => {
-  //   try {
-  //     let payload = {
-  //       user_id: editUser.user_id,
-  //       constant: constant,
-  //       website: website,
-  //       states: selectedStates,
-  //       location_id: editUser.location_id,
-  //     };
 
-  //     let resp = await axios.post("https://leadsystem.highsierraleads.com/user/update", payload);
-
-  //     if(resp.data){
-  //       let temp_users = [...users];
-  //       temp_users.map((user) => {
-  //         if(user.user_id === editUser.user_id){
-  //           user = {...payload};
-  //         }
-  //       })
-  //       setUsers([...temp_users]);
-  //       currentUsers = [...temp_users];
-  //     }
-
-  //     setShowEditModal(false);
-  //     } catch (error) {
-  //     console.error("Error updating user:", error);
-  //   }
-  // };
 
   const handleSave = async () => {
     try {
@@ -172,39 +144,14 @@ const App = () => {
   };
   
 
-  // Toggle user active/inactive status
-  // const toggleUserStatus = async (userId) => {
-  //   try {
-  //     let resp = await axios.post("https://leadsystem.highsierraleads.com/user/status-toggle", {
-  //       user_id: userId,
-  //     });
-  //     if(resp.data){
-  //       let temp_users = [...users];
-  //       temp_users.map((user) => {
-  //         if(user.user_id === userId){
-  //           user.active = !user.active;
-  //         }
-  //       })
-  //       setUsers([...temp_users]);
-  //       currentUsers = [...temp_users];
-  //       setActiveCount(currentUsers.filter(user => user.active).length);
-  //       setInactiveCount(currentUsers.filter(user => !user.active).length);
-  //     }
-  //     else{
-  //       alert("Something went wrong! Please try after some time");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error toggling user status:", error);
-  //   }
-  // };
 
   const toggleUserStatus = async (userId, isCurrentlyActive) => {
     try {
-        let newStatus = !isCurrentlyActive; // Flip the status logically
+        let newStatus = !isCurrentlyActive; 
         
         let resp = await axios.post("https://leadsystem.highsierraleads.com/user/status-toggle", {
             user_id: userId,
-            active: newStatus, // Send the new status explicitly
+            active: newStatus, 
         });
 
         if (resp.data) {
@@ -324,40 +271,7 @@ const App = () => {
             </th>
             <th>Email</th>
             <th>Phone</th>
-            {/* <th>States</th> */}
-            {/* <th>Locations</th> */}
             <th>Website</th>
-            {/* <th>
-              <Dropdown>
-                <Dropdown.Toggle variant="string" id="string">
-                  CONSTANT
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <Dropdown.Item onClick={() => handleSort('constant', 'max')}>
-                    High to Low
-                  </Dropdown.Item>
-                  <Dropdown.Item onClick={() => handleSort('constant', 'min')}>
-                    Low to High
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </th> */}
-            {/* <th>
-              <Dropdown>
-                <Dropdown.Toggle variant="string" id="string">
-                  LEAD COUNT
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <Dropdown.Item onClick={() => handleSort('leads_count', 'max')}>
-                    High to Low
-                  </Dropdown.Item>
-                  <Dropdown.Item onClick={() => handleSort('leads_count', 'min')}>
-                    Low to High
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </th> */}
-            {/* <th>Status</th> */}
             <th>Edit</th>
           </tr>
         </thead>
@@ -368,8 +282,6 @@ const App = () => {
               <td>{user.name}</td>
               <td>{user.email}</td>
               <td>{user.phone || "N/A"}</td>
-              {/* <td>{user.states ? user.states.join(', ') : ''}</td> */}
-              {/* <td>{user.location_name || "N/A"}</td> */}
               <td>
                   {user.website ? (
                     <a href={user.website} target="_blank" rel="noopener noreferrer">
@@ -379,31 +291,7 @@ const App = () => {
                     "N/A"
                   )}
                 </td>
-              {/* <td>{user.constant}</td> */}
-              {/* <td>{user.leads_count}</td> */}
-              {/* <td> */}
-                {/* <button onClick={() => toggleUserStatus(user.user_id)}
-                  style={{
-                    backgroundColor: user.active ? "#9de09e" : "#faaaab",
-                    color: "white",
-                    border: "none",
-                    padding: "5px 10px",
-                    borderRadius: "5px",
-                  }}>
-                  {user.active ? "Active" : "Inactive"}
-                </button> */}
-                {/* <button onClick={() => toggleUserStatus(user.user_id, user.active)}
-                    style={{
-                        backgroundColor: user.active ? "#9de09e" : "#faaaab",
-                        color: "white",
-                        border: "none",
-                        padding: "5px 10px",
-                        borderRadius: "5px",
-                    }}>
-                    {user.active ? "Active" : "Inactive"}
-                </button> */}
-
-              {/* </td> */}
+              
               <td>
                 <button onClick={() => handleEdit(user)} className='Edit-Button'>✏️Edit</button>
               </td>
@@ -418,63 +306,12 @@ const App = () => {
         
     
   <div className="location-dropdown-center">
-  {/* <Dropdown>
-    <Dropdown.Toggle variant="warning" id="location-filter-dropdown">
-      <FaFilter /> Location
-    </Dropdown.Toggle>
-
-    <Dropdown.Menu>
-      <Dropdown.Item onClick={() => setSelectedLocation("")}>All Locations</Dropdown.Item>
-      {locations.map((location, index) => (
-        <Dropdown.Item key={index} onClick={() => setSelectedLocation(location)}>
-          {location}
-        </Dropdown.Item>
-      ))}
-    </Dropdown.Menu>
-  </Dropdown> */}
-              {/* <Dropdown>
-                <Dropdown.Toggle variant="string" id="string">
-                  NAME
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <Dropdown.Item onClick={() => handleSort('name', 'asc')}>
-                    A to Z
-                  </Dropdown.Item>
-                  <Dropdown.Item onClick={() => handleSort('name', 'desc')}>
-                    Z to A
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown> */}
-              
-              {/* <Dropdown>
-                <Dropdown.Toggle variant="string" id="string">
-                  LEAD COUNT
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <Dropdown.Item onClick={() => handleSort('leads_count', 'max')}>
-                    High to Low
-                  </Dropdown.Item>
-                  <Dropdown.Item onClick={() => handleSort('leads_count', 'min')}>
-                    Low to High
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown> */}
 </div>
 
         {currentUsers.length > 0 ? (
           currentUsers.map((user) => (
             <div key={user.user_id} className="mobile-user">
               <div className="status-row">
-              {/* <button onClick={() => toggleUserStatus(user.user_id)}
-                  style={{
-                    backgroundColor: user.active ? "#9de09e" : "#faaaab",
-                    color: "white",
-                    border: "none",
-                    padding: "5px 10px",
-                    borderRadius: "5px",
-                  }}>
-                  {user.active ? "Active" : "Inactive"}
-                </button> */}
                 <button className='Edit-Button' onClick={() => handleEdit(user)}>✏️Edit</button>
               </div>
 
@@ -497,10 +334,6 @@ const App = () => {
                 <span className="info-left">Name: </span> 
                 <span className="info-right"> {user.name}</span> 
               </div>
-              {/* <div className="info-row">
-              <span className="info-left">States: </span>
-              <span className="info-right"> {user.states.length > 0 ? user.states.join(", ") : "N/A"}</span>
-              </div> */}
               <div className="info-row">
               <span className="info-left">Email: </span>
                 <span className="info-right">{user.email}</span>
@@ -509,20 +342,7 @@ const App = () => {
                 <div className="column">
                   <span className="th">Phone: </span>
                   <span>{user.phone || "N/A"}</span>
-                </div>
-                {/* <div className="column">
-                  <span className="th">Lead Count: </span>
-                  <span>{user.leads_count}</span>
-                </div> */}
-                {/* <div className="column">
-                  <span className="th">Constant: </span>
-                  <span>{user.constant}</span>
-                </div> */}
-                {/* <div className="column">
-                  <span className="th">Location: </span>
-                  <span>{user.location_name || "N/A"}</span>
-                </div> */}
-                
+                </div> 
               </div>
             </div>
           ))
@@ -567,67 +387,14 @@ const App = () => {
         </div>
       </div>
 
-      {/* Edit Modal */}
-      {/* <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit User</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group>
-              <Form.Label>Constant</Form.Label>
-              <Form.Control
-                type="number"
-                value={constant}
-                onChange={(e) => setConstant(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Website</Form.Label>
-              <Form.Control
-                type="text"
-                value={website}
-                onChange={(e) => setWebsite(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>States</Form.Label>
-              <Multiselect
-                options={states}
-                selectedValues={selectedStates}
-                isObject={false}
-                onSelect={(selectedList) => setSelectedStates(selectedList)}
-                onRemove={(selectedList) => setSelectedStates(selectedList)}
-              />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowEditModal(false)}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={handleSave}>
-            Save
-          </Button>
-        </Modal.Footer>
-      </Modal> */}
+      
       <Modal show={showEditModal} onHide={() => setShowEditModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Edit Participant</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
-            {/* <Form.Group controlId="states">
-              <Form.Label>States</Form.Label>
-              <Multiselect
-                options={states} // List of options
-                selectedValues={selectedStates} // Preselected values
-                onSelect={(selectedList) => setSelectedStates(selectedList)} // Function when an item is selected
-                onRemove={(selectedList) => setSelectedStates(selectedList)} // Function when an item is removed
-                displayValue="name" // Property to display
-                isObject={false} // States array is a list of strings, not objects
-              />
-            </Form.Group> */}
+            
             <Form.Group controlId="website">
               <Form.Label>Website URL</Form.Label>
               <Form.Control
@@ -637,16 +404,7 @@ const App = () => {
                 onChange={(e) => setWebsite(e.target.value)}
               />
             </Form.Group>
-            {/* <Form.Group controlId="constant">
-              <Form.Label>Constant (%)</Form.Label>
-              <Form.Control
-                type="number"
-                min="0"
-                max="100"
-                value={constant}
-                onChange={(e) => setConstant(e.target.value)}
-              />
-            </Form.Group> */}
+            
           </Form>
         </Modal.Body>
         <Modal.Footer>
